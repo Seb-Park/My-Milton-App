@@ -3,8 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:my_milton/components/period.dart';
 
-//void main() => runApp(MyApp());
-
 class MyMiltonHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -52,19 +50,20 @@ class _MyHomePageState extends State<MyHomePage> {
                                   fontSize: 36,
                                   fontWeight: FontWeight.normal)))),
                 ),
-                period(context, "Precalculus", "Hales", "MA41-C-1", "AMC004", "8:20",
-                    "9:10"),
-                period(context, "Programming 2/3", "Hales", "MACS23", "AMC004", "9:15",
-                    "10:00"),
+                period(context, "Precalculus", "Hales", "MA41-C-1", "AMC004",
+                    "8:20", "9:10"),
+                period(context, "Programming 2/3", "Hales", "MACS23", "AMC004",
+                    "9:15", "10:00"),
                 period(context, "Recess", " ", " ", " ", "10:00", "10:15"),
-                period(context,
-                    "Biology", "Lillis", "SCHB-2", "PSC202", "10:15", "11:00"),
+                period(context, "Biology", "Lillis", "SCHB-2", "PSC202",
+                    "10:15", "11:00"),
                 period(context, " - ", "", "", "", "11:05", "11:50"),
-                period(context, "Advanced Jazz", "Sinicrope", "ADVJIH-2", "K113",
-                    "11:55", "12:40"),
+                period(context, "Advanced Jazz", "Sinicrope", "ADVJIH-2",
+                    "K113", "11:55", "12:40"),
                 period(context, " - ", "", "", "", "12:30", "1:15"),
                 period(context, " - ", "", "", "", "1:20", "2:05"),
-                period(context, "Chinese 4", "Shi", "CH4-1", "WRE310", "2:10", "2:55"),
+                period(context, "Chinese 4", "Shi", "CH4-1", "WRE310", "2:10",
+                    "2:55"),
               ],
             ),
           ),
@@ -96,7 +95,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           elevation: 0.0,
                           shape: CircleBorder(),
                           child: Center(
-                              child: Text(author.substring(0,1),
+                              child: Text(author.substring(0, 1),
                                   style: GoogleFonts.quicksand(
                                       textStyle: TextStyle(
                                           color: Colors.white,
@@ -171,52 +170,94 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-          child: Column(
-            children: <Widget>[
-              Container(
-                color: Colors.blue,
-                child: SizedBox(
-                    height: 100,
-                    width: double.infinity,
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        "Sebastian Park",
-                        style: GoogleFonts.quicksand(
-                            textStyle: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: Colors.white)),
-                      ),
+      drawer: ClipRRect(
+        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        child: Drawer(
+            child: Column(
+          children: <Widget>[
+            Container(
+              color: Colors.blue,
+              child: SizedBox(
+                  height: 100,
+                  width: double.infinity,
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      "Sebastian Park",
+                      style: GoogleFonts.quicksand(
+                          textStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              color: Colors.white)),
+                    ),
+                  )),
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: OutlineButton(
+                padding: EdgeInsets.only(top: 20, bottom: 20, left: 10),
+                child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Icon(Icons.account_circle),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Profile",
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                      ],
                     )),
               ),
-              SizedBox(
-                width: double.infinity,
-                child: OutlineButton(
-                  padding: EdgeInsets.only(top: 20, bottom: 20, left: 10),
-                  child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Profile",
-                        textAlign: TextAlign.left,
-                      )),
-                ),
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: OutlineButton(
+                padding: EdgeInsets.only(top: 20, bottom: 20, left: 10),
+                child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Icon(Icons.home),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Home",
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                      ],
+                    )),
               ),
-              SizedBox(
-                width: double.infinity,
-                child: OutlineButton(
-                  padding: EdgeInsets.only(top: 20, bottom: 20, left: 10),
-                  child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Profile",
-                        textAlign: TextAlign.left,
-                      )),
-                ),
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: OutlineButton(
+                padding: EdgeInsets.only(top: 20, bottom: 20, left: 10),
+                child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Icon(Icons.exit_to_app),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "Logout",
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                      ],
+                    )),
               ),
-            ],
-          ) // Populate the Drawer in the next step.
+            ),
+          ],
+        ) // Populate the Drawer in the next step.
+            ),
       ),
       appBar: AppBar(
         shape: RoundedRectangleBorder(
@@ -233,7 +274,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(child: _page == 0 ? showSchedule() : showAnnouncements()),
       bottomNavigationBar: Container(
           decoration:
-          BoxDecoration(border: Border.all(color: Colors.grey, width: 0.1)),
+              BoxDecoration(border: Border.all(color: Colors.grey, width: 0.1)),
           child: CurvedNavigationBar(
             color: Theme.of(context).canvasColor,
             backgroundColor: Colors.blue,
