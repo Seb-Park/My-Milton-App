@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:my_milton/components/period.dart';
 
-void main() => runApp(MyApp());
+//void main() => runApp(MyApp());
 
-class MyApp extends StatelessWidget {
+class MyMiltonHome extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -33,140 +34,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int _page = 0;
 
-  Widget Period(String className, String teacher, String course, String place,
-      String timeStart, String timeEnd) {
-    return Card(
-      elevation: 1.0, //Change this maybe?
-      child: MaterialButton(
-        splashColor: Colors.cyan,
-        elevation: 0.0,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 0.0),
-          child: Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Container(
-                        height: 60,
-                        width: 60,
-                        child: Card(
-                          color: Colors.orange,
-                          elevation: 0.0,
-                          shape: CircleBorder(),
-                          child: Center(
-                              child: Text("$timeStart",
-                                  style: GoogleFonts.quicksand(
-                                      textStyle: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15)))),
-                        )),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "$className",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.left,
-                          ),
-                          Text(
-                            "$teacher - $course",
-                            style: TextStyle(
-                              color: Colors.grey,
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-//                    width: 200,
-                    child: Text(
-                      place,
-                      textAlign: TextAlign.right,
-                      style: TextStyle(
-                        color: Colors.grey,
-                      ),
-                    )),
-              ],
-            ),
-          ),
-        ),
-        onPressed: () {
-          classDetailDialog(
-              context, className, teacher, course, place, timeStart, timeEnd);
-        },
-      ),
-    );
-  }
-
-  classDetailDialog(BuildContext context, String className, String teacher,
-      String course, String place, String timeStart, String timeEnd) {
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(15.0))),
-            content: Stack(
-              alignment: Alignment.center,
-              children: <Widget>[
-                Container(
-//              height: context.size.height/2,
-                  height: 128,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      Text(className,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20)),
-                      Text('$timeStart - $timeEnd'),
-                      Text(teacher),
-                      Text(place),
-//                      MaterialButton(
-//                        height: 20,
-//                        onPressed: (){Navigator.pop(context);},
-//                        child: Text("Close", style: TextStyle(color: Colors.blue,fontSize: 15.0),
-//                        textAlign: TextAlign.center,)
-//                      )
-                    ],
-                  ),
-                ),
-//                Align(
-//                  alignment: Alignment.bottomCenter,
-//                  child: MaterialButton(
-//                    onPressed:(){
-//                      Navigator.pop(context);
-//                    },
-//                    child: Container(
-////                          padding: EdgeInsets.only(top: 15.0, bottom: 15.0),
-//                      decoration: BoxDecoration(
-//                        color:Colors.white,
-//                        borderRadius: BorderRadius.only(
-//                            bottomLeft: Radius.circular(32.0),
-//                            bottomRight: Radius.circular(32.0)),
-//                      ),
-//                      child:  Text(
-//                        "Close",
-//                        style: TextStyle(color: Colors.blue,fontSize: 15.0),
-//                        textAlign: TextAlign.center,
-//                      ),
-//                    ),
-//                  ),
-//                ),
-              ],
-            ),
-          );
-        });
-  }
-
   Widget showSchedule() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -185,19 +52,19 @@ class _MyHomePageState extends State<MyHomePage> {
                                   fontSize: 36,
                                   fontWeight: FontWeight.normal)))),
                 ),
-                Period("Precalculus", "Hales", "MA41-C-1", "AMC004", "8:20",
+                period(context, "Precalculus", "Hales", "MA41-C-1", "AMC004", "8:20",
                     "9:10"),
-                Period("Programming 2/3", "Hales", "MACS23", "AMC004", "9:15",
+                period(context, "Programming 2/3", "Hales", "MACS23", "AMC004", "9:15",
                     "10:00"),
-                Period("Recess", " ", " ", " ", "10:00", "10:15"),
-                Period(
+                period(context, "Recess", " ", " ", " ", "10:00", "10:15"),
+                period(context,
                     "Biology", "Lillis", "SCHB-2", "PSC202", "10:15", "11:00"),
-                Period(" - ", "", "", "", "11:05", "11:50"),
-                Period("Advanced Jazz", "Sinicrope", "ADVJIH-2", "K113",
+                period(context, " - ", "", "", "", "11:05", "11:50"),
+                period(context, "Advanced Jazz", "Sinicrope", "ADVJIH-2", "K113",
                     "11:55", "12:40"),
-                Period(" - ", "", "", "", "12:30", "1:15"),
-                Period(" - ", "", "", "", "1:20", "2:05"),
-                Period("Chinese 4", "Shi", "CH4-1", "WRE310", "2:10", "2:55"),
+                period(context, " - ", "", "", "", "12:30", "1:15"),
+                period(context, " - ", "", "", "", "1:20", "2:05"),
+                period(context, "Chinese 4", "Shi", "CH4-1", "WRE310", "2:10", "2:55"),
               ],
             ),
           ),
