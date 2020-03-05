@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-Widget period(BuildContext context, String className, String teacher, String course, String place,
-    String timeStart, String timeEnd) {
+Widget period(BuildContext context, String className, String teacher,
+    String course, String place, String timeStart, String timeEnd) {
   return Card(
     elevation: 1.0, //Change this maybe?
     child: MaterialButton(
@@ -25,11 +25,16 @@ Widget period(BuildContext context, String className, String teacher, String cou
                         shape: CircleBorder(),
                         child: Center(
                             child: Text("$timeStart",
-                                style: GoogleFonts.quicksand(
-                                    textStyle: TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15)))),
+//                                style: GoogleFonts.quicksand(
+//                                    textStyle: TextStyle(
+//                                        color: Colors.white,
+//                                        fontWeight: FontWeight.bold,
+//                                        fontSize: 15))
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                    fontFamily: 'Quicksand'))),
                       )),
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
@@ -57,12 +62,12 @@ Widget period(BuildContext context, String className, String teacher, String cou
               Container(
 //                    width: 200,
                   child: Text(
-                    place,
-                    textAlign: TextAlign.right,
-                    style: TextStyle(
-                      color: Colors.grey,
-                    ),
-                  )),
+                place,
+                textAlign: TextAlign.right,
+                style: TextStyle(
+                  color: Colors.grey,
+                ),
+              )),
             ],
           ),
         ),

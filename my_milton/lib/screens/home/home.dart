@@ -45,10 +45,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Container(
                       height: 50,
                       child: Text("Monday, March 2",
-                          style: GoogleFonts.quicksand(
-                              textStyle: TextStyle(
-                                  fontSize: 36,
-                                  fontWeight: FontWeight.normal)))),
+//                          style: GoogleFonts.quicksand(
+//                              textStyle: TextStyle(
+//                                  fontSize: 36,
+//                                  fontWeight: FontWeight.normal))
+                          style: TextStyle(
+                              fontFamily: 'Quicksand',
+                              fontSize: 36,
+                              fontWeight: FontWeight.normal))),
                 ),
                 period(context, "Precalculus", "Hales", "MA41-C-1", "AMC004",
                     "8:20", "9:10"),
@@ -171,7 +175,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: ClipRRect(
-        borderRadius: BorderRadius.all(Radius.circular(20.0)),
+        borderRadius: BorderRadius.only(
+            topRight: Radius.circular(20.0),
+            bottomRight: Radius.circular(20.0)),
         child: Drawer(
             child: Column(
           children: <Widget>[
@@ -184,11 +190,16 @@ class _MyHomePageState extends State<MyHomePage> {
                     alignment: Alignment.center,
                     child: Text(
                       "Sebastian Park",
-                      style: GoogleFonts.quicksand(
-                          textStyle: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              color: Colors.white)),
+//                      style: GoogleFonts.quicksand(
+//                          textStyle: TextStyle(
+//                              fontWeight: FontWeight.bold,
+//                              fontSize: 20,
+//                              color: Colors.white)),
+                      style: TextStyle(
+                          fontFamily: 'Quicksand',
+                          color: Colors.white,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700),
                     ),
                   )),
             ),
@@ -269,7 +280,8 @@ class _MyHomePageState extends State<MyHomePage> {
         elevation: 1.0,
         centerTitle: true,
         title: Text(widget.title,
-            textAlign: TextAlign.center, style: GoogleFonts.quicksand()),
+            textAlign: TextAlign.center,
+            style: TextStyle(fontFamily: 'Quicksand')),
       ),
       body: Center(child: _page == 0 ? showSchedule() : showAnnouncements()),
       bottomNavigationBar: Container(
