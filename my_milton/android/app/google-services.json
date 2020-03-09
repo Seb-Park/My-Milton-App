@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "569682859962",
+    "firebase_url": "https://mymilton-24459.firebaseio.com",
+    "project_id": "mymilton-24459",
+    "storage_bucket": "mymilton-24459.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:569682859962:android:0fc777457287873b0faf83",
+        "android_client_info": {
+          "package_name": "com.compsci23.my_milton"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "569682859962-5nanaeateaop7i4ij14cgr2amhta9ovb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.compsci23.my_milton",
+            "certificate_hash": "44464cf80a9a01e0cdb58504c356395c41064adf"
+          }
+        },
+        {
+          "client_id": "569682859962-t27muad1p2fcnchbqr21obvkcp19knh5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDdtkNU7Yflcc9hn4iASC3Qj2kf1MpwUTg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "569682859962-t27muad1p2fcnchbqr21obvkcp19knh5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

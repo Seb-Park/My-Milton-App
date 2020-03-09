@@ -3,24 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:my_milton/components/period.dart';
 
-class MyMiltonHome extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Schedule',
-      theme: ThemeData(
-        canvasColor: const Color(0xfff0f0f0),
-        brightness: Brightness.light,
-        primarySwatch: Colors.blue,
-        accentColor: Colors.orangeAccent,
-      ),
-      darkTheme: ThemeData.dark(),
-      home: MyHomePage(title: 'MyMilton'),
-    );
-  }
-}
-
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
   final String title;
