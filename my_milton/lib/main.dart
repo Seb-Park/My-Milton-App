@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:my_milton/screens/auth-screen/auth.dart';
 import 'package:my_milton/screens/home/home.dart';
 import 'package:my_milton/services/google_oauth.dart';
 
@@ -30,7 +31,9 @@ class _MyMilton extends State<MyMilton> {
         accentColor: Colors.orangeAccent,
       ),
       darkTheme: ThemeData.dark(),
-      home: MyHomePage(title: 'MyMilton'),
+      home: LoginPage(title: 'MyMilton'),
+//      home: MyHomePage(title: 'MyMilton')
     );
+
   }
 }
