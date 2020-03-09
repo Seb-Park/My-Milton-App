@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:my_milton/components/period.dart';
+import 'package:my_milton/services/google_oauth.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key key, this.title, this.user}) : super(key: key);
   final String title;
+  final String user;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
@@ -171,7 +173,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Align(
                     alignment: Alignment.center,
                     child: Text(
-                      "Sebastian Park",
+                      "Username",
 //                      style: GoogleFonts.quicksand(
 //                          textStyle: TextStyle(
 //                              fontWeight: FontWeight.bold,
@@ -230,6 +232,7 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(
               width: double.infinity,
               child: OutlineButton(
+                onPressed: (){signOutGoogle();},
                 padding: EdgeInsets.only(top: 20, bottom: 20, left: 10),
                 child: Align(
                     alignment: Alignment.centerLeft,
