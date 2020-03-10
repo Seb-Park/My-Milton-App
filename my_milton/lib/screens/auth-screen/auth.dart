@@ -3,8 +3,7 @@ import 'package:my_milton/services/google_oauth.dart';
 import 'package:my_milton/screens/home/home.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key, this.title}) : super(key: key);
-  final String title;
+  LoginPage({Key key}) : super(key: key);
 
   @override
   _LoginState createState() => _LoginState();
