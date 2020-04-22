@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:my_milton/components/period.dart';
+import 'package:my_milton/screens/auth-screen/auth.dart';
 import 'package:my_milton/services/google_oauth.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -155,6 +156,23 @@ class _MyHomePageState extends State<MyHomePage> {
     ));
   }
 
+  Widget showCards(){
+    return(
+      Column(
+        children: <Widget>[
+          GridView.count(
+            crossAxisCount: 2,
+            children: <Widget>[
+              Card(
+                child: Image(image: AssetImage("assets/images/add.png"))
+              ),
+            ],
+          ),
+        ]
+      )
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -232,7 +250,11 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(
               width: double.infinity,
               child: OutlineButton(
-                onPressed: (){signOutGoogle();},
+                onPressed: () {
+                  signOutGoogle();
+//                  Navigator.push(context,
+//                      MaterialPageRoute(builder: (context) => LoginPage()));
+                },
                 padding: EdgeInsets.only(top: 20, bottom: 20, left: 10),
                 child: Align(
                     alignment: Alignment.centerLeft,
