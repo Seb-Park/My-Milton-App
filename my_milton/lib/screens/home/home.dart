@@ -32,7 +32,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                       height: 50,
-                      child: Text("Monday, March 2",
+                      child: Text(
+                          weekdayFromInt(DateTime.now().weekday) +
+                              ", " +
+                              monthNameFromInt(DateTime.now().month)
+                                  .toString() +
+                              " " +
+                              DateTime.now().day.toString(),
 //                          style: GoogleFonts.quicksand(
 //                              textStyle: TextStyle(
 //                                  fontSize: 36,
@@ -103,6 +109,89 @@ class _MyHomePageState extends State<MyHomePage> {
           return "Sunday";
         }
         break;
+    }
+  }
+
+  String monthNameFromInt(int monthNo) {
+    switch (monthNo) {
+      case 1:
+        {
+          return "January";
+        }
+        break;
+
+      case 2:
+        {
+          return "February";
+        }
+        break;
+
+      case 3:
+        {
+          return "March";
+        }
+        break;
+
+      case 4:
+        {
+          return "April";
+        }
+        break;
+
+      case 5:
+        {
+          return "May";
+        }
+        break;
+
+      case 6:
+        {
+          return "June";
+        }
+        break;
+
+      case 7:
+        {
+          return "July";
+        }
+        break;
+
+      case 8:
+        {
+          return "August";
+        }
+        break;
+
+      case 9:
+        {
+          return "September";
+        }
+        break;
+      case 10:
+        {
+          return "October";
+        }
+        break;
+
+      case 11:
+        {
+          return "November";
+        }
+        break;
+
+      default:
+        {
+          return "December";
+        }
+        break;
+    }
+  }
+
+  String todayOrYesterday(int today, int dayInQuestion) {
+    if (dayInQuestion == today) {
+      return "today";
+    } else {
+      return "yesterday";
     }
   }
 
@@ -261,7 +350,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     Padding(
                       padding: const EdgeInsets.only(left: 8.0),
                       child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
@@ -272,8 +361,12 @@ class _MyHomePageState extends State<MyHomePage> {
                           Text(
                             post['poster'] +
                                 " - Posted " +
-                                weekdayFromInt(((post['date_posted'] as Timestamp).toDate())
-                                    .weekday) + " " +
+                                todayOrYesterday(
+                                    DateTime.now().weekday,
+                                    (post['date_posted'] as Timestamp)
+                                        .toDate()
+                                        .weekday) +
+                                " " +
                                 ((post['date_posted'] as Timestamp).toDate())
                                     .hour
                                     .toString() +
@@ -309,14 +402,21 @@ class _MyHomePageState extends State<MyHomePage> {
                 Firestore.instance.collection('announcement_board').snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) return const CircularProgressIndicator();
-              return ListView.builder(
-                itemExtent: 80.0,
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Expanded(
+                    child: ListView.builder(
+                      itemExtent: 80.0,
 //                itemCount: (snapshot.data.documents.length),
-                itemCount: (snapshot.data.documents[0]['announcements'].length),
-                itemBuilder: (context, index) => announcementSubPost(
-                    ((snapshot.data.documents[0])['announcements'])[index],
-                    Colors.red),
+                      itemCount: (snapshot.data.documents[0]['announcements'].length),
+                      itemBuilder: (context, index) => announcementSubPost(
+                          ((snapshot.data.documents[0])['announcements'])[index],
+                          Colors.red),
 //                announcementPost(snapshot.data.documents[index], Colors.red),
+                    ),
+                  ),
+                ],
               );
             })
 //        Column(
@@ -389,6 +489,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print("building home");
     return Scaffold(
       drawer: ClipRRect(
         borderRadius: BorderRadius.only(

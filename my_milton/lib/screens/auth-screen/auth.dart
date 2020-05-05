@@ -13,7 +13,7 @@ class _LoginState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     print("building the login page");
-    signOutGoogle();
+//    signOutGoogle();
     return Scaffold(
 //      drawer:,
         body: Container(
