@@ -12,8 +12,9 @@ class Wrapper extends StatelessWidget {
 //    print("!!!" + user.username + " is now the name of the user.");
     print("Reload");
 //    return LoginPage();
-    return MyHomePage(title: "MyMilton");
+//    return MyHomePage(title: "MyMilton");
     if (user == null) {
+//      print("!!!" + user.username + " is now the name of the user.");
       print("It's the non-usernamed login page");
       return LoginPage();
     } else {
@@ -22,6 +23,7 @@ class Wrapper extends StatelessWidget {
 //      );
       print("It's the usernamed login page");
       print("!!!" + user.username + " is now the name of the user.");
+//      return LoginPage();
       return MyHomePage(title: "MyMilton");
     }
   }

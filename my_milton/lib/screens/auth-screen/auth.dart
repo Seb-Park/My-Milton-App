@@ -12,6 +12,8 @@ class LoginPage extends StatefulWidget {
 class _LoginState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
+    print("building the login page");
+    signOutGoogle();
     return Scaffold(
 //      drawer:,
         body: Container(
@@ -65,7 +67,7 @@ class _LoginState extends State<LoginPage> {
               child: MaterialButton(
                   onPressed: () {
                     signInWithGoogle().then((id) {
-                      print(id.username);
+                      print(id.username + " is the newly logged in id!");
 //                  print(id);
                       return MyHomePage(
                         title: "MyMilton",

@@ -5,5 +5,6 @@ class AppUser {
   String phoneNumber;
   String photoUrl;
 
-  AppUser({this.username, this.id, this.email, this.phoneNumber,this.photoUrl});
+  AppUser(
+      {this.username, this.id, this.email, this.phoneNumber, this.photoUrl});
 }
