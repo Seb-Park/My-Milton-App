@@ -17,7 +17,7 @@ class Wrapper extends StatelessWidget {
     return (StreamBuilder<FirebaseUser>(
       stream: FirebaseAuth.instance.onAuthStateChanged,
       builder: (context, snapshot) {
-        if (FirebaseAuth.instance.currentUser() != null&&user.username!=null) {
+        if (FirebaseAuth.instance.currentUser() != null&&user!=null) {
           return MyHomePage(title: "MyMilton");
 //          return LoginPage();
         } else {

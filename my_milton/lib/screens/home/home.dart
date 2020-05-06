@@ -20,9 +20,9 @@ class MyHomePage extends StatefulWidget {
 
 String todayOrYesterday(int today, int dayInQuestion) {
   if (dayInQuestion == today) {
-    return "today";
+    return "Today";
   } else {
-    return "yesterday";
+    return "Yesterday";
   }
 }
 
@@ -196,9 +196,6 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-
-
-
   Widget showAnnouncements() {
     return (StreamBuilder(
 //              stream: Firestore.instance.collection('announcement_board').snapshots(),
@@ -227,7 +224,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         height: 20,
                       ),
                       onPressed: () {
-                        sendPost("Test Post", "Just testing out stuff.");
+                        newPost(context);
+//                        sendPost("Test Post", "Just testing out stuff.");
                       },
                       shape: RoundedRectangleBorder(
                           borderRadius:
@@ -256,8 +254,57 @@ class _MyHomePageState extends State<MyHomePage> {
         }));
   }
 
-  void newPost(BuildContext context){
+  newPost(BuildContext context) {
+    TextEditingController titleController = new TextEditingController();
+    TextEditingController contentController = new TextEditingController();
 
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(Radius.circular(5.0))),
+            content: Stack(
+              alignment: Alignment.center,
+              children: <Widget>[
+                Container(
+//              height: context.size.height/2,
+//                height: double.infinity,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      Text("New Post",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 20)),
+                      TextFormField(
+                        controller: titleController,
+                        decoration: InputDecoration(
+                          hintText: "Title",
+                        ),
+                      ),
+                      TextFormField(
+                          controller: contentController,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: 5,
+                          decoration: InputDecoration(
+                            hintText: "Message",
+                          )),
+                      MaterialButton(
+                        color: Colors.blue,
+                        child:
+                            Text("Send", style: TextStyle(color: Colors.white)),
+                        onPressed: () {
+                          sendPost(titleController.text, contentController.text);
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        });
   }
 
   Future sendPost(String title, String content) async {
@@ -361,6 +408,7 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(
               width: double.infinity,
               child: OutlineButton(
+                onPressed: () {},
                 padding: EdgeInsets.only(top: 20, bottom: 20, left: 10),
                 child: Align(
                     alignment: Alignment.centerLeft,

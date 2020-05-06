@@ -44,7 +44,8 @@ Widget announcementPost(DocumentSnapshot document, Color color) {
                         ),
                         Text(
                           document['author'] +
-                              " - Posted " +
+//                              " - Posted " +
+                          " - " +
                               todayOrYesterday(
                                   DateTime.now().weekday,
                                   (document['time'] as Timestamp)
