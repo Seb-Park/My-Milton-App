@@ -197,10 +197,13 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget showAnnouncements() {
+    var tfhoursAgo = Timestamp.fromDate((new DateTime.now())
+        .subtract(new Duration(minutes: Duration.minutesPerDay)));
     return (StreamBuilder(
 //              stream: Firestore.instance.collection('announcement_board').snapshots(),
         stream: Firestore.instance
             .collection('announcement_posts')
+            .where("time",isGreaterThanOrEqualTo: tfhoursAgo)
             .orderBy("time", descending: true)
             .snapshots(),
         builder: (context, snapshot) {
@@ -292,10 +295,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       MaterialButton(
                         color: Colors.blue,
                         child:
-                            Text("Send", style: TextStyle(color: Colors.white)),
+                            Text("Post", style: TextStyle(color: Colors.white)),
                         onPressed: () {
-                          sendPost(titleController.text, contentController.text);
-                          Navigator.pop(context);
+                          if (titleController.text != null &&
+                              titleController.text.length > 0) {
+                            sendPost(
+                                titleController.text, contentController.text);
+                            Navigator.pop(context);
+                          }
                         },
                       ),
                     ],
