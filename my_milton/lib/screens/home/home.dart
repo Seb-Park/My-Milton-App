@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+import 'package:my_milton/components/announcement.dart';
 import 'package:my_milton/components/period.dart';
 import 'package:my_milton/screens/auth-screen/auth.dart';
 import 'package:my_milton/services/google_oauth.dart';
@@ -15,6 +16,14 @@ class MyHomePage extends StatefulWidget {
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
+}
+
+String todayOrYesterday(int today, int dayInQuestion) {
+  if (dayInQuestion == today) {
+    return "today";
+  } else {
+    return "yesterday";
+  }
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -187,269 +196,98 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  String todayOrYesterday(int today, int dayInQuestion) {
-    if (dayInQuestion == today) {
-      return "today";
-    } else {
-      return "yesterday";
-    }
-  }
 
-  Widget announcementPostMock(
-      String title, String post, String time, String author, Color color) {
-    return Card(
-      elevation: 0.0, //Change this maybe?
-      child: MaterialButton(
-        splashColor: Colors.cyan,
-        elevation: 0.0,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 0.0),
-          child: Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Container(
-                        height: 60,
-                        width: 60,
-                        child: Card(
-                          color: color,
-                          elevation: 0.0,
-                          shape: CircleBorder(),
-                          child: Center(
-                              child: Text(author.substring(0, 1),
-                                  style: GoogleFonts.quicksand(
-                                      textStyle: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15)))),
-                        )),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            "$title",
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.left,
-                          ),
-                          Text(
-                            "$author - Posted at $time",
-                            style: TextStyle(
-                              color: Colors.grey,
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-        onPressed: () {},
-      ),
-    );
-  }
 
-  Widget announcementPost(DocumentSnapshot document, Color color) {
-    return Card(
-      elevation: 0.0, //Change this maybe?
-      child: MaterialButton(
-        splashColor: Colors.cyan,
-        elevation: 0.0,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 0.0),
-          child: Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Container(
-                        height: 60,
-                        width: 60,
-                        child: Card(
-                          color: color,
-                          elevation: 0.0,
-                          shape: CircleBorder(),
-                          child: Center(
-                              child: Text(document['author'].substring(0, 1),
-                                  style: GoogleFonts.quicksand(
-                                      textStyle: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15)))),
-                        )),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            document['title'],
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.left,
-                          ),
-                          Text(
-                            document['author'] + " - Posted at 9:00a",
-                            style: TextStyle(
-                              color: Colors.grey,
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-        onPressed: () {},
-      ),
-    );
-  }
-
-  Widget announcementSubPost(Map post, Color color) {
-    return Card(
-      elevation: 0.0, //Change this maybe?
-      child: MaterialButton(
-        splashColor: Colors.cyan,
-        elevation: 0.0,
-        child: Padding(
-          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 0.0),
-          child: Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Container(
-                        height: 60,
-                        width: 60,
-                        child: Card(
-                          color: color,
-                          elevation: 0.0,
-                          shape: CircleBorder(),
-                          child: Center(
-                              child: Text(post['poster'].substring(0, 1),
-                                  style: GoogleFonts.quicksand(
-                                      textStyle: TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15)))),
-                        )),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            post['subject'],
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                            textAlign: TextAlign.left,
-                          ),
-                          Text(
-                            post['poster'] +
-                                " - Posted " +
-                                todayOrYesterday(
-                                    DateTime.now().weekday,
-                                    (post['date_posted'] as Timestamp)
-                                        .toDate()
-                                        .weekday) +
-                                " " +
-                                ((post['date_posted'] as Timestamp).toDate())
-                                    .hour
-                                    .toString() +
-                                ":" +
-                                ((post['date_posted'] as Timestamp).toDate())
-                                    .minute
-                                    .toStringAsPrecision(2)
-                                    .replaceAll(".", '')
-                            //this makes the minutes always have 2 digits and then removes all decimals
-                            ,
-                            style: TextStyle(
-                              color: Colors.grey,
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        ),
-        onPressed: () {},
-      ),
-    );
-  }
 
   Widget showAnnouncements() {
     return (StreamBuilder(
-            stream:
-                Firestore.instance.collection('announcement_board').snapshots(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) return const CircularProgressIndicator();
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(
-                    child: ListView.builder(
-                      itemExtent: 80.0,
-//                itemCount: (snapshot.data.documents.length),
-                      itemCount: (snapshot.data.documents[0]['announcements'].length),
-                      itemBuilder: (context, index) => announcementSubPost(
-                          ((snapshot.data.documents[0])['announcements'])[index],
-                          Colors.red),
-//                announcementPost(snapshot.data.documents[index], Colors.red),
+//              stream: Firestore.instance.collection('announcement_board').snapshots(),
+        stream: Firestore.instance
+            .collection('announcement_posts')
+            .orderBy("time", descending: true)
+            .snapshots(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) return const CircularProgressIndicator();
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "Announcements",
+                      style: TextStyle(fontFamily: 'Quicksand', fontSize: 25),
                     ),
-                  ),
-                ],
-              );
-            })
-//        Column(
-//      children: <Widget>[
-//        announcementPost(
-//            "REMINDER: Late start on Thursday.",
-//            "School will start at 10:00 on Thursday.",
-//            "11:38",
-//            "José Ruiz",
-//            Colors.lightBlueAccent),
-//        announcementPost(
-//            "Chinese Club Today!",
-//            "Chinese Club will be meeting at 3:00 Today!",
-//            "11:36",
-//            "Sebastian Park",
-//            Colors.redAccent),
-//        announcementPost("DONUT DAY!", "Donut Day in the Student Center Today!",
-//            "9:59", "Andre Heard", Colors.pinkAccent),
-//        announcementPost(
-//            "Class III Assembly moved to King.",
-//            "Junior assembly moved to King theatre today.",
-//            "7:23",
-//            "Ryan Stone",
-//            Colors.orange),
-//        announcementPost(
-//            "T-Shirt sale in Student Center",
-//            "This random club will be selling T-Shirts in the Stu today at 4.",
-//            "7:30 Yesterday",
-//            "Random Kid",
-//            Colors.purple),
-//      ],
-//    )
-        );
+                    MaterialButton(
+                      color: Colors.white,
+                      child: Image(
+                        image: AssetImage("assets/images/add.png"),
+                        height: 20,
+                      ),
+                      onPressed: () {
+                        sendPost("Test Post", "Just testing out stuff.");
+                      },
+                      shape: RoundedRectangleBorder(
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(20.0))),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemExtent: 80.0,
+//                itemCount: (snapshot.data.documents.length),
+//                  itemCount:
+//                  (snapshot.data.documents[0]['announcements'].length),
+                  itemCount: (snapshot.data.documents.length),
+                  itemBuilder: (context, index) =>
+//                      announcementSubPost(
+//                      ((snapshot.data.documents[0])['announcements'])[index],
+//                      Colors.red),
+                      announcementPost(
+                          snapshot.data.documents[index], Colors.red),
+                ),
+              ),
+            ],
+          );
+        }));
+  }
+
+  void newPost(BuildContext context){
+
+  }
+
+  Future sendPost(String title, String content) async {
+    CollectionReference abCollection =
+        Firestore.instance.collection('announcement_posts');
+//        Firestore.instance.collection('announcement_board');
+//    List<DocumentReference> newBoard =(abCollection.document("todays_announcements")
+//    as Map)['announcements'] as List<DocumentReference>;
+//    newBoard.add({
+//      "subject": title,
+//      "details" : content,
+//      "poster" : Provider.of<AppUser>(context).username,
+//      "date_posted" : (DateTime.now()) as Timestamp,
+//    } as DocumentReference);
+//    return await abCollection.document("todays_announcements").setData({
+//      "announcements": [
+//        {
+//          "subject": title,
+//          "details": content,
+//          "poster": Provider.of<AppUser>(context).username,
+//          "date_posted": Timestamp.fromDate(DateTime.now()),
+//        }
+//      ]
+//    }, merge: true);
+    abCollection.add({
+      "title": title,
+      "content": content,
+      "author": Provider.of<AppUser>(context).username,
+      "time": Timestamp.fromDate(DateTime.now()),
+    });
   }
 
   Widget showCards() {
