@@ -271,6 +271,7 @@ class _MyHomePageState extends State<MyHomePage> {
               alignment: Alignment.center,
               children: <Widget>[
                 Container(
+                  height: MediaQuery.of(context).size.height/2,
 //              height: context.size.height/2,
 //                height: double.infinity,
                   child: Column(
@@ -293,6 +294,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             hintText: "Message",
                           )),
                       MaterialButton(
+                        elevation: 0,
                         color: Colors.blue,
                         child:
                             Text("Post", style: TextStyle(color: Colors.white)),
