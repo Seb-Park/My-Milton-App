@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../screens/home/home.dart';
 
-Widget announcementPost(DocumentSnapshot document, Color color) {
+Widget announcementPost(
+    DocumentSnapshot document, Color color, BuildContext context) {
   return Card(
     elevation: 0.0, //Change this maybe?
     child: MaterialButton(
@@ -31,21 +32,26 @@ Widget announcementPost(DocumentSnapshot document, Color color) {
                                     fontSize: 15,
                                     fontFamily: 'Quicksand'))),
                       )),
-                  Padding(
+                  Container(
+//                    width: double.infinity,
                     padding: const EdgeInsets.only(left: 8.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          document['title'],
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.left,
+                        Container(
+                          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-120),
+                          child: Text(
+                            document['title'],
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.left,
+                          ),
                         ),
                         Text(
                           document['author'] +
 //                              " - Posted " +
-                          " - " +
+                              " - " +
                               todayOrYesterday(
                                   DateTime.now().weekday,
                                   (document['time'] as Timestamp)
@@ -77,7 +83,22 @@ Widget announcementPost(DocumentSnapshot document, Color color) {
           ),
         ),
       ),
-      onPressed: () {},
+      onPressed: () {
+        announcementDetails(
+            document['title'],
+            document['content'],
+            todayOrYesterday(DateTime.now().weekday,
+                    (document['time'] as Timestamp).toDate().weekday) +
+                " " +
+                ((document['time'] as Timestamp).toDate()).hour.toString() +
+                ":" +
+                ((document['time'] as Timestamp).toDate())
+                    .minute
+                    .toStringAsPrecision(2)
+                    .replaceAll(".", ''),
+            document['author'],
+            context);
+      },
     ),
   );
 }
@@ -223,4 +244,65 @@ Widget announcementSubPost(Map post, Color color) {
       onPressed: () {},
     ),
   );
+}
+
+announcementDetails(String title, String content, String time, String author,
+    BuildContext context) {
+  return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(5.0))),
+          content: Stack(
+            alignment: Alignment.center,
+            children: <Widget>[
+              Container(
+//                  height: MediaQuery.of(context).size.height / 1.5,
+//              height: context.size.height/2,
+//                height: double.infinity,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Text(title,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20), textAlign: TextAlign.center,),
+                    Padding(
+                      padding: const EdgeInsets.only(top:8.0, bottom: 8.0),
+                      child: Text(author, style: TextStyle(fontSize: 20)),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(time),
+                    ),
+                    Container(
+                      child: Container(
+                        constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height / 3),
+                        width: double.infinity,
+                        color: const Color(0xfff0f0f0),
+                        child: SingleChildScrollView(
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(content),
+                              )),
+                      ),
+                    ),
+                    MaterialButton(
+                      elevation: 0,
+                      color: Colors.blue,
+                      child:
+                          Text("Close", style: TextStyle(color: Colors.white)),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      });
 }

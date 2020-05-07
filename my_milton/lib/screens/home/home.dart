@@ -249,7 +249,7 @@ class _MyHomePageState extends State<MyHomePage> {
 //                      ((snapshot.data.documents[0])['announcements'])[index],
 //                      Colors.red),
                       announcementPost(
-                          snapshot.data.documents[index], Colors.red),
+                          snapshot.data.documents[index], Colors.red, context),
                 ),
               ),
             ],
