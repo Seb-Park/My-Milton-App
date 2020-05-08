@@ -512,7 +512,8 @@ class _MyHomePageState extends State<MyHomePage> {
           decoration:
               BoxDecoration(border: Border.all(color: Colors.grey, width: 0.1)),
           child: CurvedNavigationBar(
-            color: Theme.of(context).canvasColor,
+//            color: Theme.of(context).canvasColor,
+            color:Colors.white,
             backgroundColor: Colors.blue,
             height: 50,
             items: <Widget>[
