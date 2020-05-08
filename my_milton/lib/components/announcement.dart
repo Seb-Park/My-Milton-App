@@ -43,9 +43,10 @@ Widget announcementPost(
                           constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-120),
                           child: Text(
                             document['title'],
-                            overflow: TextOverflow.ellipsis,
+                            overflow: TextOverflow.fade,
                             style: TextStyle(fontWeight: FontWeight.bold),
                             textAlign: TextAlign.left,
+                            softWrap: false,
                           ),
                         ),
                         Text(
@@ -265,10 +266,14 @@ announcementDetails(String title, String content, String time, String author,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
-                    Text(title,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20), textAlign: TextAlign.center,),
+                    Container(
+//                      constraints: BoxConstraints(minHeight:100, maxHeight: 100),
+                      child: Text(title,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20), textAlign: TextAlign.center,),
+                    ),
                     Padding(
                       padding: const EdgeInsets.only(top:8.0, bottom: 8.0),
                       child: Text(author, style: TextStyle(fontSize: 20)),

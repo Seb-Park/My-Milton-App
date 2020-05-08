@@ -490,7 +490,8 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
-            bottom: Radius.circular(15),
+//            bottom: Radius.circular(15),
+            bottom: Radius.circular(0)
           ),
         ),
         backgroundColor: Colors.blue,
