@@ -40,7 +40,9 @@ Widget announcementPost(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Container(
-                          constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width-120),
+                          constraints: BoxConstraints(
+                              maxWidth:
+                                  MediaQuery.of(context).size.width - 120),
                           child: Text(
                             document['title'],
                             overflow: TextOverflow.fade,
@@ -63,12 +65,12 @@ Widget announcementPost(
                                   .hour
                                   .toString() +
                               ":" +
-                              ((document['time'] as Timestamp).toDate())
-                                  .minute
-                                  .toStringAsPrecision(2)
-                                  .replaceAll(".", '')
+                              (((document['time'] as Timestamp).toDate())
+                                          .minute +
+                                      100)
+                                  .toString()
+                                  .substring(1, 3),
                           //this makes the minutes always have 2 digits and then removes all decimals
-                          ,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                             color: Colors.grey,
@@ -93,10 +95,9 @@ Widget announcementPost(
                 " " +
                 ((document['time'] as Timestamp).toDate()).hour.toString() +
                 ":" +
-                ((document['time'] as Timestamp).toDate())
-                    .minute
-                    .toStringAsPrecision(2)
-                    .replaceAll(".", ''),
+                (((document['time'] as Timestamp).toDate()).minute + 100)
+                    .toString()
+                    .substring(1, 3),
             document['author'],
             context);
       },
@@ -268,14 +269,16 @@ announcementDetails(String title, String content, String time, String author,
                   children: <Widget>[
                     Container(
 //                      constraints: BoxConstraints(minHeight:100, maxHeight: 100),
-                      child: Text(title,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20), textAlign: TextAlign.center,),
+                      child: Text(
+                        title,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                     Padding(
-                      padding: const EdgeInsets.only(top:8.0, bottom: 8.0),
+                      padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                       child: Text(author, style: TextStyle(fontSize: 20)),
                     ),
                     Padding(
@@ -284,14 +287,15 @@ announcementDetails(String title, String content, String time, String author,
                     ),
                     Container(
                       child: Container(
-                        constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height / 3),
+                        constraints: BoxConstraints(
+                            maxHeight: MediaQuery.of(context).size.height / 3),
                         width: double.infinity,
                         color: const Color(0xfff0f0f0),
                         child: SingleChildScrollView(
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(content),
-                              )),
+                            child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(content),
+                        )),
                       ),
                     ),
                     MaterialButton(

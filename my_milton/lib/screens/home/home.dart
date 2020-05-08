@@ -238,7 +238,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
               ),
               Expanded(
-                child: ListView.builder(
+                child: snapshot.data.documents.length>0?ListView.builder(
                   itemExtent: 80.0,
 //                itemCount: (snapshot.data.documents.length),
 //                  itemCount:
@@ -250,7 +250,10 @@ class _MyHomePageState extends State<MyHomePage> {
 //                      Colors.red),
                       announcementPost(
                           snapshot.data.documents[index], Colors.red, context),
-                ),
+                ):
+                Center(
+                    child: Text("No announcements here!\n\n\n"))
+                ,
               ),
             ],
           );
