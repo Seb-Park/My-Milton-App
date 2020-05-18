@@ -21,7 +21,7 @@ class MyHomePage extends StatefulWidget {
 
 Future <LoginPage> _signOut()  async{
   await FirebaseAuth.instance.signOut();
-//  await _googleSignIn.signOut();
+  signOutGoogle();
   return new LoginPage();
 }
 
