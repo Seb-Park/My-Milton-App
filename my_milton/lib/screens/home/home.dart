@@ -582,10 +582,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                   drawerButton("Profile", Color(0xFFfff3d1), Colors.orange,
-                      Icons.account_circle, 3,
+                      Icons.account_circle, 4,
                           () {
                         setState(() {
-                          _page = 3;
+                          _page = 4;
                         });
                       }),
                   drawerButton(
@@ -603,9 +603,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       }),
                   drawerButton(
                       "Hub", Color(0xFFb8ffd1), Colors.green, Icons.add_box,
-                      2, () {
+                      3, () {
                     setState(() {
-                      _page = 2;
+                      _page = 3;
                     });
                   }),
                   drawerButton(
@@ -655,6 +655,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: Colors.blue,
               ),
               Icon(Icons.people, size: 30, color: Colors.orange),
+              Icon(Icons.add_box, size: 30, color: Colors.orange),
               Icon(Icons.settings, size: 30, color: Colors.blue),
             ],
             onTap: (index) {
