@@ -19,7 +19,7 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-Future <LoginPage> _signOut()  async{
+Future<LoginPage> _signOut() async {
   await FirebaseAuth.instance.signOut();
   signOutGoogle();
   return new LoginPage();
@@ -49,12 +49,19 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Container(
                       height: 50,
                       child: Text(
-                          weekdayFromInt(DateTime.now().weekday) +
+                          weekdayFromInt(DateTime
+                              .now()
+                              .weekday) +
                               ", " +
-                              monthNameFromInt(DateTime.now().month)
+                              monthNameFromInt(DateTime
+                                  .now()
+                                  .month)
                                   .toString() +
                               " " +
-                              DateTime.now().day.toString(),
+                              DateTime
+                                  .now()
+                                  .day
+                                  .toString(),
 //                          style: GoogleFonts.quicksand(
 //                              textStyle: TextStyle(
 //                                  fontSize: 36,
@@ -64,19 +71,77 @@ class _MyHomePageState extends State<MyHomePage> {
                               fontSize: 36,
                               fontWeight: FontWeight.normal))),
                 ),
-                period(context, "Precalculus", "Hales", "MA41-C-1", "AMC004",
-                    "8:20", "9:10"),
-                period(context, "Programming 2/3", "Hales", "MACS23", "AMC004",
-                    "9:15", "10:00"),
-                period(context, "Recess", " ", " ", " ", "10:00", "10:15"),
-                period(context, "Biology", "Lillis", "SCHB-2", "PSC202",
-                    "10:15", "11:00"),
-                period(context, " - ", "", "", "", "11:05", "11:50"),
-                period(context, "Advanced Jazz", "Sinicrope", "ADVJIH-2",
-                    "K113", "11:55", "12:40"),
-                period(context, " - ", "", "", "", "12:30", "1:15"),
-                period(context, " - ", "", "", "", "1:20", "2:05"),
-                period(context, "Chinese 4", "Shi", "CH4-1", "WRE310", "2:10",
+                period(
+                    context,
+                    "Precalculus",
+                    "Hales",
+                    "MA41-C-1",
+                    "AMC004",
+                    "8:20",
+                    "9:10"),
+                period(
+                    context,
+                    "Programming 2/3",
+                    "Hales",
+                    "MACS23",
+                    "AMC004",
+                    "9:15",
+                    "10:00"),
+                period(
+                    context,
+                    "Recess",
+                    " ",
+                    " ",
+                    " ",
+                    "10:00",
+                    "10:15"),
+                period(
+                    context,
+                    "Biology",
+                    "Lillis",
+                    "SCHB-2",
+                    "PSC202",
+                    "10:15",
+                    "11:00"),
+                period(
+                    context,
+                    " - ",
+                    "",
+                    "",
+                    "",
+                    "11:05",
+                    "11:50"),
+                period(
+                    context,
+                    "Advanced Jazz",
+                    "Sinicrope",
+                    "ADVJIH-2",
+                    "K113",
+                    "11:55",
+                    "12:40"),
+                period(
+                    context,
+                    " - ",
+                    "",
+                    "",
+                    "",
+                    "12:30",
+                    "1:15"),
+                period(
+                    context,
+                    " - ",
+                    "",
+                    "",
+                    "",
+                    "1:20",
+                    "2:05"),
+                period(
+                    context,
+                    "Chinese 4",
+                    "Shi",
+                    "CH4-1",
+                    "WRE310",
+                    "2:10",
                     "2:55"),
               ],
             ),
@@ -210,7 +275,7 @@ class _MyHomePageState extends State<MyHomePage> {
 //              stream: Firestore.instance.collection('announcement_board').snapshots(),
         stream: Firestore.instance
             .collection('announcement_posts')
-            .where("time",isGreaterThanOrEqualTo: tfhoursAgo)
+            .where("time", isGreaterThanOrEqualTo: tfhoursAgo)
             .orderBy("time", descending: true)
             .snapshots(),
         builder: (context, snapshot) {
@@ -239,13 +304,14 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                       shape: RoundedRectangleBorder(
                           borderRadius:
-                              BorderRadius.all(Radius.circular(20.0))),
+                          BorderRadius.all(Radius.circular(20.0))),
                     ),
                   ],
                 ),
               ),
               Expanded(
-                child: snapshot.data.documents.length>0?ListView.builder(
+                child: snapshot.data.documents.length > 0
+                    ? ListView.builder(
                   itemExtent: 80.0,
 //                itemCount: (snapshot.data.documents.length),
 //                  itemCount:
@@ -255,12 +321,10 @@ class _MyHomePageState extends State<MyHomePage> {
 //                      announcementSubPost(
 //                      ((snapshot.data.documents[0])['announcements'])[index],
 //                      Colors.red),
-                      announcementPost(
-                          snapshot.data.documents[index], Colors.red, context),
-                ):
-                Center(
-                    child: Text("No announcements here!\n\n\n"))
-                ,
+                  announcementPost(snapshot.data.documents[index],
+                      Colors.red, context),
+                )
+                    : Center(child: Text("No announcements here!\n\n\n")),
               ),
             ],
           );
@@ -281,7 +345,10 @@ class _MyHomePageState extends State<MyHomePage> {
               alignment: Alignment.center,
               children: <Widget>[
                 Container(
-                  height: MediaQuery.of(context).size.height/2,
+                  height: MediaQuery
+                      .of(context)
+                      .size
+                      .height / 2,
 //              height: context.size.height/2,
 //                height: double.infinity,
                   child: Column(
@@ -307,7 +374,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         elevation: 0,
                         color: Colors.blue,
                         child:
-                            Text("Post", style: TextStyle(color: Colors.white)),
+                        Text("Post", style: TextStyle(color: Colors.white)),
                         onPressed: () {
                           if (titleController.text != null &&
                               titleController.text.length > 0) {
@@ -328,7 +395,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future sendPost(String title, String content) async {
     CollectionReference abCollection =
-        Firestore.instance.collection('announcement_posts');
+    Firestore.instance.collection('announcement_posts');
 //        Firestore.instance.collection('announcement_board');
 //    List<DocumentReference> newBoard =(abCollection.document("todays_announcements")
 //    as Map)['announcements'] as List<DocumentReference>;
@@ -351,7 +418,9 @@ class _MyHomePageState extends State<MyHomePage> {
     abCollection.add({
       "title": title,
       "content": content,
-      "author": Provider.of<AppUser>(context).username,
+      "author": Provider
+          .of<AppUser>(context)
+          .username,
       "time": Timestamp.fromDate(DateTime.now()),
     });
   }
@@ -391,119 +460,169 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  Widget drawerButton(String btnText, Color selectedColor, Color selectedFont,
+      IconData btnIcn, int btnPage, Function onTapFunction) {
+    return SizedBox(
+      width: double.infinity,
+      child: ClipRRect(
+        borderRadius: (_page != btnPage)
+            ? BorderRadius.only(
+            topRight: Radius.circular(50), bottomRight: Radius.circular(50))
+            : BorderRadius.zero,
+        child: FlatButton(
+          onPressed: () {
+            onTapFunction();
+            Navigator.pop(context);
+          },
+          color: (_page == btnPage) ? selectedColor : Colors.white,
+//          highlightColor: (_page != btnPage) ? Theme.of(context).canvasColor : Colors.white,
+          padding: EdgeInsets.only(top: 10, bottom: 10, left: 10),
+          child: Align(
+              alignment: Alignment.centerLeft,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                    child: Icon(
+                      btnIcn,
+                      color: (_page == btnPage) ? selectedFont : Colors.black,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      btnText,
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                        color: (_page == btnPage) ? selectedFont : Colors.black,
+                      ),
+                    ),
+                  ),
+                ],
+              )),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     print("building home");
     return Scaffold(
       drawer: ClipRRect(
-        borderRadius: BorderRadius.only(
-            topRight: Radius.circular(20.0),
-            bottomRight: Radius.circular(20.0)),
+        borderRadius: BorderRadius.zero,
+//        borderRadius: BorderRadius.only(
+//            topRight: Radius.circular(20.0),
+//            bottomRight: Radius.circular(20.0)),
         child: Drawer(
-            child: Column(
-          children: <Widget>[
-            Container(
-              color: Colors.blue,
-              child: SizedBox(
-                  height: 100,
-                  width: double.infinity,
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      Provider.of<AppUser>(context).username,
+            child: Container(
+              color: Colors.white,
+              child: Column(
+                children: <Widget>[
+                  Container(
+//              color: Colors.blue,
+                    decoration: BoxDecoration(
+                      border: Border(bottom: BorderSide(width: 1.0, color: Color(0xFFededed))),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 0.0),
+                      child: SizedBox(
+                          height: 150,
+                          width: double.infinity,
+                          child: Align(
+//                            alignment: Alignment.centerLeft,
+                            alignment: Alignment.center,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                SizedBox(
+                                  height: 15,
+                                ),
+                                Container(
+                                  height: 70,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(200),
+                                    child: Image.network(
+                                      Provider
+                                          .of<AppUser>(context)
+                                          .photoUrl,
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  Provider
+                                      .of<AppUser>(context)
+                                      .username,
 //                      style: GoogleFonts.quicksand(
 //                          textStyle: TextStyle(
 //                              fontWeight: FontWeight.bold,
 //                              fontSize: 20,
 //                              color: Colors.white)),
-                      style: TextStyle(
-                          fontFamily: 'Quicksand',
-                          color: Colors.white,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700),
+                                  style: TextStyle(
+                                      fontFamily: 'Quicksand',
+//                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                Text(
+                                  Provider
+                                      .of<AppUser>(context)
+                                      .email,
+                                  style: TextStyle(
+//                                      fontFamily: 'Quicksand',
+//                                      color: Colors.white,
+//                                      fontSize: 15,
+                                      fontWeight: FontWeight.w300),
+                                ),
+                              ],
+                            ),
+                          )),
                     ),
-                  )),
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: OutlineButton(
-                onPressed: () {},
-                padding: EdgeInsets.only(top: 20, bottom: 20, left: 10),
-                child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Icon(Icons.account_circle),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "Profile",
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                      ],
-                    )),
+                  ),
+                  drawerButton("Profile", Color(0xFFfff3d1), Colors.orange,
+                      Icons.account_circle, 3,
+                          () {
+                        setState(() {
+                          _page = 3;
+                        });
+                      }),
+                  drawerButton(
+                      "Home", Color(0xFFb0e2ff), Colors.blue, Icons.home, 0,
+                          () {
+                        setState(() {
+                          _page = 0;
+                        });
+                      }),
+                  drawerButton("Announcements", Color(0xFFffd1d1), Colors.red,
+                      Icons.chat_bubble_outline, 1, () {
+                        setState(() {
+                          _page = 1;
+                        });
+                      }),
+                  drawerButton(
+                      "Hub", Color(0xFFb8ffd1), Colors.green, Icons.add_box,
+                      2, () {
+                    setState(() {
+                      _page = 2;
+                    });
+                  }),
+                  drawerButton(
+                      "Logout", Color(0xFFb8ffd1), Colors.green,
+                      Icons.exit_to_app, 10, () {
+                    _signOut();
+                  }),
+                ],
               ),
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: OutlineButton(
-                padding: EdgeInsets.only(top: 20, bottom: 20, left: 10),
-                child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Icon(Icons.home),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "Home",
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                      ],
-                    )),
-              ),
-            ),
-            SizedBox(
-              width: double.infinity,
-              child: OutlineButton(
-                onPressed: () {
-//                  signOutGoogle();
-                  _signOut();
-//                  Navigator.push(context,
-//                      MaterialPageRoute(builder: (context) => LoginPage()));
-                },
-                padding: EdgeInsets.only(top: 20, bottom: 20, left: 10),
-                child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Icon(Icons.exit_to_app),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            "Logout",
-                            textAlign: TextAlign.left,
-                          ),
-                        ),
-                      ],
-                    )),
-              ),
-            ),
-          ],
-        ) // Populate the Drawer in the next step.
-            ),
+            ) // Populate the Drawer in the next step.
+        ),
       ),
       appBar: AppBar(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(
 //            bottom: Radius.circular(15),
-            bottom: Radius.circular(0)
-          ),
+              bottom: Radius.circular(0)),
         ),
         backgroundColor: Colors.blue,
         elevation: 1.0,
@@ -518,10 +637,10 @@ class _MyHomePageState extends State<MyHomePage> {
               : _page == 1 ? showAnnouncements() : showCards()),
       bottomNavigationBar: Container(
           decoration:
-              BoxDecoration(border: Border.all(color: Colors.grey, width: 0.1)),
+          BoxDecoration(border: Border.all(color: Colors.grey, width: 0.1)),
           child: CurvedNavigationBar(
 //            color: Theme.of(context).canvasColor,
-            color:Colors.white,
+            color: Colors.white,
             backgroundColor: Colors.blue,
             height: 50,
             items: <Widget>[
