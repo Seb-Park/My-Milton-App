@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
@@ -16,6 +17,12 @@ class MyHomePage extends StatefulWidget {
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
+}
+
+Future <LoginPage> _signOut()  async{
+  await FirebaseAuth.instance.signOut();
+//  await _googleSignIn.signOut();
+  return new LoginPage();
 }
 
 String todayOrYesterday(int today, int dayInQuestion) {
@@ -464,7 +471,8 @@ class _MyHomePageState extends State<MyHomePage> {
               width: double.infinity,
               child: OutlineButton(
                 onPressed: () {
-                  signOutGoogle();
+//                  signOutGoogle();
+                  _signOut();
 //                  Navigator.push(context,
 //                      MaterialPageRoute(builder: (context) => LoginPage()));
                 },
