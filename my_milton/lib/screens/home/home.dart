@@ -35,6 +35,7 @@ String todayOrYesterday(int today, int dayInQuestion) {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _page = 0;
+  GlobalKey _bottomNavigationKey = GlobalKey();
 
   Widget showSchedule() {
     return Column(
@@ -49,19 +50,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Container(
                       height: 50,
                       child: Text(
-                          weekdayFromInt(DateTime
-                              .now()
-                              .weekday) +
+                          weekdayFromInt(DateTime.now().weekday) +
                               ", " +
-                              monthNameFromInt(DateTime
-                                  .now()
-                                  .month)
+                              monthNameFromInt(DateTime.now().month)
                                   .toString() +
                               " " +
-                              DateTime
-                                  .now()
-                                  .day
-                                  .toString(),
+                              DateTime.now().day.toString(),
 //                          style: GoogleFonts.quicksand(
 //                              textStyle: TextStyle(
 //                                  fontSize: 36,
@@ -71,77 +65,19 @@ class _MyHomePageState extends State<MyHomePage> {
                               fontSize: 36,
                               fontWeight: FontWeight.normal))),
                 ),
-                period(
-                    context,
-                    "Precalculus",
-                    "Hales",
-                    "MA41-C-1",
-                    "AMC004",
-                    "8:20",
-                    "9:10"),
-                period(
-                    context,
-                    "Programming 2/3",
-                    "Hales",
-                    "MACS23",
-                    "AMC004",
-                    "9:15",
-                    "10:00"),
-                period(
-                    context,
-                    "Recess",
-                    " ",
-                    " ",
-                    " ",
-                    "10:00",
-                    "10:15"),
-                period(
-                    context,
-                    "Biology",
-                    "Lillis",
-                    "SCHB-2",
-                    "PSC202",
-                    "10:15",
-                    "11:00"),
-                period(
-                    context,
-                    " - ",
-                    "",
-                    "",
-                    "",
-                    "11:05",
-                    "11:50"),
-                period(
-                    context,
-                    "Advanced Jazz",
-                    "Sinicrope",
-                    "ADVJIH-2",
-                    "K113",
-                    "11:55",
-                    "12:40"),
-                period(
-                    context,
-                    " - ",
-                    "",
-                    "",
-                    "",
-                    "12:30",
-                    "1:15"),
-                period(
-                    context,
-                    " - ",
-                    "",
-                    "",
-                    "",
-                    "1:20",
-                    "2:05"),
-                period(
-                    context,
-                    "Chinese 4",
-                    "Shi",
-                    "CH4-1",
-                    "WRE310",
-                    "2:10",
+                period(context, "Precalculus", "Hales", "MA41-C-1", "AMC004",
+                    "8:20", "9:10"),
+                period(context, "Programming 2/3", "Hales", "MACS23", "AMC004",
+                    "9:15", "10:00"),
+                period(context, "Recess", " ", " ", " ", "10:00", "10:15"),
+                period(context, "Biology", "Lillis", "SCHB-2", "PSC202",
+                    "10:15", "11:00"),
+                period(context, " - ", "", "", "", "11:05", "11:50"),
+                period(context, "Advanced Jazz", "Sinicrope", "ADVJIH-2",
+                    "K113", "11:55", "12:40"),
+                period(context, " - ", "", "", "", "12:30", "1:15"),
+                period(context, " - ", "", "", "", "1:20", "2:05"),
+                period(context, "Chinese 4", "Shi", "CH4-1", "WRE310", "2:10",
                     "2:55"),
               ],
             ),
@@ -304,7 +240,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       },
                       shape: RoundedRectangleBorder(
                           borderRadius:
-                          BorderRadius.all(Radius.circular(20.0))),
+                              BorderRadius.all(Radius.circular(20.0))),
                     ),
                   ],
                 ),
@@ -312,18 +248,18 @@ class _MyHomePageState extends State<MyHomePage> {
               Expanded(
                 child: snapshot.data.documents.length > 0
                     ? ListView.builder(
-                  itemExtent: 80.0,
+                        itemExtent: 80.0,
 //                itemCount: (snapshot.data.documents.length),
 //                  itemCount:
 //                  (snapshot.data.documents[0]['announcements'].length),
-                  itemCount: (snapshot.data.documents.length),
-                  itemBuilder: (context, index) =>
+                        itemCount: (snapshot.data.documents.length),
+                        itemBuilder: (context, index) =>
 //                      announcementSubPost(
 //                      ((snapshot.data.documents[0])['announcements'])[index],
 //                      Colors.red),
-                  announcementPost(snapshot.data.documents[index],
-                      Colors.red, context),
-                )
+                            announcementPost(snapshot.data.documents[index],
+                                Colors.red, context),
+                      )
                     : Center(child: Text("No announcements here!\n\n\n")),
               ),
             ],
@@ -345,10 +281,7 @@ class _MyHomePageState extends State<MyHomePage> {
               alignment: Alignment.center,
               children: <Widget>[
                 Container(
-                  height: MediaQuery
-                      .of(context)
-                      .size
-                      .height / 2,
+                  height: MediaQuery.of(context).size.height / 2,
 //              height: context.size.height/2,
 //                height: double.infinity,
                   child: Column(
@@ -374,7 +307,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         elevation: 0,
                         color: Colors.blue,
                         child:
-                        Text("Post", style: TextStyle(color: Colors.white)),
+                            Text("Post", style: TextStyle(color: Colors.white)),
                         onPressed: () {
                           if (titleController.text != null &&
                               titleController.text.length > 0) {
@@ -395,7 +328,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   Future sendPost(String title, String content) async {
     CollectionReference abCollection =
-    Firestore.instance.collection('announcement_posts');
+        Firestore.instance.collection('announcement_posts');
 //        Firestore.instance.collection('announcement_board');
 //    List<DocumentReference> newBoard =(abCollection.document("todays_announcements")
 //    as Map)['announcements'] as List<DocumentReference>;
@@ -418,9 +351,7 @@ class _MyHomePageState extends State<MyHomePage> {
     abCollection.add({
       "title": title,
       "content": content,
-      "author": Provider
-          .of<AppUser>(context)
-          .username,
+      "author": Provider.of<AppUser>(context).username,
       "time": Timestamp.fromDate(DateTime.now()),
     });
   }
@@ -438,6 +369,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 setState(() {
                   _page = 1;
+                  setBottomNavPage(_page);
                 });
               },
               color: Colors.white,
@@ -467,7 +399,7 @@ class _MyHomePageState extends State<MyHomePage> {
       child: ClipRRect(
         borderRadius: (_page != btnPage)
             ? BorderRadius.only(
-            topRight: Radius.circular(50), bottomRight: Radius.circular(50))
+                topRight: Radius.circular(50), bottomRight: Radius.circular(50))
             : BorderRadius.zero,
         child: FlatButton(
           onPressed: () {
@@ -506,6 +438,12 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  void setBottomNavPage(int page){
+    final CurvedNavigationBarState navBarState =
+        _bottomNavigationKey.currentState;
+    navBarState.setPage(page);
+  }
+
   @override
   Widget build(BuildContext context) {
     print("building home");
@@ -517,106 +455,101 @@ class _MyHomePageState extends State<MyHomePage> {
 //            bottomRight: Radius.circular(20.0)),
         child: Drawer(
             child: Container(
-              color: Colors.white,
-              child: Column(
-                children: <Widget>[
-                  Container(
+          color: Colors.white,
+          child: Column(
+            children: <Widget>[
+              Container(
 //              color: Colors.blue,
-                    decoration: BoxDecoration(
-                      border: Border(bottom: BorderSide(width: 1.0, color: Color(0xFFededed))),
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 0.0),
-                      child: SizedBox(
-                          height: 150,
-                          width: double.infinity,
-                          child: Align(
+                decoration: BoxDecoration(
+                  border: Border(
+                      bottom: BorderSide(width: 1.0, color: Color(0xFFededed))),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 0.0),
+                  child: SizedBox(
+                      height: 150,
+                      width: double.infinity,
+                      child: Align(
 //                            alignment: Alignment.centerLeft,
-                            alignment: Alignment.center,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        alignment: Alignment.center,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 //                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                SizedBox(
-                                  height: 15,
+                          children: <Widget>[
+                            SizedBox(
+                              height: 15,
+                            ),
+                            Container(
+                              height: 70,
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(200),
+                                child: Image.network(
+                                  Provider.of<AppUser>(context).photoUrl,
                                 ),
-                                Container(
-                                  height: 70,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(200),
-                                    child: Image.network(
-                                      Provider
-                                          .of<AppUser>(context)
-                                          .photoUrl,
-                                    ),
-                                  ),
-                                ),
-                                Text(
-                                  Provider
-                                      .of<AppUser>(context)
-                                      .username,
+                              ),
+                            ),
+                            Text(
+                              Provider.of<AppUser>(context).username,
 //                      style: GoogleFonts.quicksand(
 //                          textStyle: TextStyle(
 //                              fontWeight: FontWeight.bold,
 //                              fontSize: 20,
 //                              color: Colors.white)),
-                                  style: TextStyle(
-                                      fontFamily: 'Quicksand',
+                              style: TextStyle(
+                                  fontFamily: 'Quicksand',
 //                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                                Text(
-                                  Provider
-                                      .of<AppUser>(context)
-                                      .email,
-                                  style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                            Text(
+                              Provider.of<AppUser>(context).email,
+                              style: TextStyle(
 //                                      fontFamily: 'Quicksand',
 //                                      color: Colors.white,
 //                                      fontSize: 15,
-                                      fontWeight: FontWeight.w300),
-                                ),
-                              ],
+                                  fontWeight: FontWeight.w300),
                             ),
-                          )),
-                    ),
-                  ),
-                  drawerButton("Profile", Color(0xFFfff3d1), Colors.orange,
-                      Icons.account_circle, 4,
-                          () {
-                        setState(() {
-                          _page = 4;
-                        });
-                      }),
-                  drawerButton(
-                      "Home", Color(0xFFb0e2ff), Colors.blue, Icons.home, 0,
-                          () {
-                        setState(() {
-                          _page = 0;
-                        });
-                      }),
-                  drawerButton("Announcements", Color(0xFFffd1d1), Colors.red,
-                      Icons.chat_bubble_outline, 1, () {
-                        setState(() {
-                          _page = 1;
-                        });
-                      }),
-                  drawerButton(
-                      "Hub", Color(0xFFb8ffd1), Colors.green, Icons.add_box,
-                      3, () {
-                    setState(() {
-                      _page = 3;
-                    });
-                  }),
-                  drawerButton(
-                      "Logout", Color(0xFFb8ffd1), Colors.green,
-                      Icons.exit_to_app, 10, () {
-                    _signOut();
-                  }),
-                ],
+                          ],
+                        ),
+                      )),
+                ),
               ),
-            ) // Populate the Drawer in the next step.
-        ),
+              drawerButton("Profile", Color(0xFFfff3d1), Colors.orange,
+                  Icons.account_circle, 4, () {
+                setState(() {
+                  _page = 4;
+                  setBottomNavPage(_page);
+                });
+              }),
+              drawerButton(
+                  "Home", Color(0xFFb0e2ff), Colors.blue, Icons.home, 0, () {
+                setState(() {
+                  _page = 0;
+                  setBottomNavPage(_page);
+                });
+              }),
+              drawerButton("Announcements", Color(0xFFffd1d1), Colors.red,
+                  Icons.chat_bubble_outline, 1, () {
+                setState(() {
+                  _page = 1;
+                  setBottomNavPage(_page);
+                });
+              }),
+              drawerButton(
+                  "Hub", Color(0xFFb8ffd1), Colors.green, Icons.add_box, 3, () {
+                setState(() {
+                  _page = 3;
+                  setBottomNavPage(_page);
+                });
+              }),
+              drawerButton("Logout", Color(0xFFb8ffd1), Colors.green,
+                  Icons.exit_to_app, 10, () {
+                _signOut();
+              }),
+            ],
+          ),
+        ) // Populate the Drawer in the next step.
+            ),
       ),
       appBar: AppBar(
         shape: RoundedRectangleBorder(
@@ -637,26 +570,31 @@ class _MyHomePageState extends State<MyHomePage> {
               : _page == 1 ? showAnnouncements() : showCards()),
       bottomNavigationBar: Container(
           decoration:
-          BoxDecoration(border: Border.all(color: Colors.grey, width: 0.1)),
+//              BoxDecoration(border: Border.all(color: Colors.grey, width: 0.1)),
+          BoxDecoration(border: Border(top: BorderSide(color: Colors.blue, width: 15))),
           child: CurvedNavigationBar(
+//            buttonBackgroundColor: Colors.blue,
 //            color: Theme.of(context).canvasColor,
+            key: _bottomNavigationKey,
             color: Colors.white,
+//            animationDuration: Duration(milliseconds: 400),
+//            animationCurve: Curves.decelerate,
             backgroundColor: Colors.blue,
             height: 50,
             items: <Widget>[
               Icon(
                 Icons.schedule,
                 size: 30,
-                color: Colors.orange,
+                color: Colors.black,
               ),
               Icon(
                 Icons.announcement,
                 size: 30,
-                color: Colors.blue,
+                color: Colors.black,
               ),
-              Icon(Icons.people, size: 30, color: Colors.orange),
-              Icon(Icons.add_box, size: 30, color: Colors.orange),
-              Icon(Icons.settings, size: 30, color: Colors.blue),
+              Icon(Icons.people, size: 30, color: Colors.black),
+              Icon(Icons.add_box, size: 30, color: Colors.black),
+              Icon(Icons.settings, size: 30, color: Colors.black),
             ],
             onTap: (index) {
               setState(() {
