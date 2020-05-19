@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 Widget period(BuildContext context, String className, String teacher,
     String course, String place, String timeStart, String timeEnd) {
   return Card(
-    elevation: 1.0, //Change this maybe?
+    elevation: 0.0, //Change this maybe?
     child: MaterialButton(
       splashColor: Colors.cyan,
       elevation: 0.0,

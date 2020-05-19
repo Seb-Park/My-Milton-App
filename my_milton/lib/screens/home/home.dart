@@ -353,6 +353,7 @@ class _MyHomePageState extends State<MyHomePage> {
       "content": content,
       "author": Provider.of<AppUser>(context).username,
       "time": Timestamp.fromDate(DateTime.now()),
+      "photo_url":Provider.of<AppUser>(context).photoUrl
     });
   }
 
@@ -447,6 +448,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     print("building home");
+    if(!Provider.of<AppUser>(context).email.endsWith("milton.edu")){
+      _signOut();
+      return LoginPage();
+    }
     return Scaffold(
       drawer: ClipRRect(
         borderRadius: BorderRadius.zero,
@@ -484,7 +489,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(200),
                                 child: Image.network(
-                                  Provider.of<AppUser>(context).photoUrl,
+                                  Provider.of<AppUser>(context).photoUrl.replaceAll('s96-c', 's400-c'),
                                 ),
                               ),
                             ),
@@ -536,9 +541,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 });
               }),
               drawerButton(
-                  "Hub", Color(0xFFb8ffd1), Colors.green, Icons.add_box, 3, () {
+                  "Hub", Color(0xFFb8ffd1), Colors.green, Icons.add_box, 2, () {
                 setState(() {
-                  _page = 3;
+                  _page = 2;
                   setBottomNavPage(_page);
                 });
               }),
@@ -588,12 +593,12 @@ class _MyHomePageState extends State<MyHomePage> {
                 color: Colors.black,
               ),
               Icon(
-                Icons.announcement,
+                Icons.chat_bubble_outline,
                 size: 30,
                 color: Colors.black,
               ),
-              Icon(Icons.people, size: 30, color: Colors.black),
               Icon(Icons.add_box, size: 30, color: Colors.black),
+              Icon(Icons.people, size: 30, color: Colors.black),
               Icon(Icons.settings, size: 30, color: Colors.black),
             ],
             onTap: (index) {

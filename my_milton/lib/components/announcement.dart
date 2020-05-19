@@ -17,21 +17,66 @@ Widget announcementPost(
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  Container(
-                      height: 60,
-                      width: 60,
-                      child: Card(
-                        color: color,
-                        elevation: 0.0,
-                        shape: CircleBorder(),
-                        child: Center(
-                            child: Text(document['author'].substring(0, 1),
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
-                                    fontFamily: 'Quicksand'))),
-                      )),
+                  document['photo_url'] == null
+                      ? Container(
+                          height: 60,
+                          width: 60,
+                          child: Card(
+                            color: color,
+                            elevation: 0.0,
+                            shape: CircleBorder(),
+                            child: Center(
+                                child: Text(document['author'].substring(0, 1),
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                        fontFamily: 'Quicksand'))),
+                          ))
+                      : Row(
+                          children: <Widget>[
+                            SizedBox(
+                              width: 4.0,
+                            ),
+                            Container(
+                              height: 50,
+                              width: 50,
+                              decoration: new BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: new DecorationImage(
+                                      fit: BoxFit.cover,
+                                      image: new NetworkImage(
+                                          document['photo_url']
+                                              .toString()
+                                              .replaceAll('s96-c', 's400-c')))),
+                            ),
+                            SizedBox(
+                              width: 4.0,
+                            )
+                          ],
+                        ),
+
+//                  child: document['photo_url'] == null
+//                          ? Card(
+//                              color: color,
+//                              elevation: 0.0,
+//                              shape: CircleBorder(),
+//                              child: Center(
+//                                  child: Text(
+//                                      document['author'].substring(0, 1),
+//                                      style: TextStyle(
+//                                          color: Colors.white,
+//                                          fontWeight: FontWeight.bold,
+//                                          fontSize: 15,
+//                                          fontFamily: 'Quicksand'))),
+//                            )
+//                          : ClipRRect(
+//                              borderRadius: BorderRadius.circular(60),
+//                              child: Image.network(
+//                                document['photo_url'],
+//                                fit: BoxFit.contain,
+//                              ),
+//                            )),
                   Container(
 //                    width: double.infinity,
                     padding: const EdgeInsets.only(left: 8.0),
