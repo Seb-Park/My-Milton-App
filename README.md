@@ -7,4 +7,4 @@ A remake of the MyMilton website for Milton Academy as a Flutter app.
 
 <img src="screenshots/drawer_profile.png" width="300"><img src="screenshots/settings.png" width="300">
 
-<img src="screenshots/dark_mode.png" width="300">
+<img src="screenshots/hub.png" width="300"><img src="screenshots/dark_mode.png" width="300">
