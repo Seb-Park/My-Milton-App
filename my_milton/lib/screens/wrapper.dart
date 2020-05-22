@@ -14,17 +14,17 @@ class Wrapper extends StatelessWidget {
     print("Reload");
 //    return LoginPage();
 //    return MyHomePage(title: "MyMilton");
-    return (StreamBuilder<FirebaseUser>(
+    return StreamBuilder<FirebaseUser>(
       stream: FirebaseAuth.instance.onAuthStateChanged,
       builder: (context, snapshot) {
-        if (FirebaseAuth.instance.currentUser() != null&&user!=null) {
+        if (FirebaseAuth.instance.currentUser() != null && user != null) {
           return MyHomePage(title: "MyMilton");
 //          return LoginPage();
         } else {
           return LoginPage();
         }
       },
-    ));
+    );
     if (user == null) {
 //      print("!!!" + user.username + " is now the name of the user.");
       print("It's the non-usernamed login page");

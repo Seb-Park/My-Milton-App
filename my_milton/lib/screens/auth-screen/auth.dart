@@ -3,7 +3,8 @@ import 'package:my_milton/services/google_oauth.dart';
 import 'package:my_milton/screens/home/home.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key key}) : super(key: key);
+  LoginPage({Key key, this.errorMessage}) : super(key: key);
+  final String errorMessage;
 
   @override
   _LoginState createState() => _LoginState();
@@ -27,7 +28,7 @@ class _LoginState extends State<LoginPage> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.only(bottom:50.0),
+            padding: const EdgeInsets.only(bottom: 50.0),
             child: Image(image: AssetImage("assets/images/myMiltonSplash.png")),
           ),
 //          Padding(
@@ -67,11 +68,16 @@ class _LoginState extends State<LoginPage> {
               child: MaterialButton(
                   onPressed: () {
                     signInWithGoogle().then((id) {
-                      print(id.username + " is the newly logged in id!");
-//                  print(id);
-                      return MyHomePage(
-                        title: "MyMilton",
-                      );
+//                      if(id.username.endsWith("milton.edu")) {
+                        print(id.username + " is the newly logged in id!");
+                        return MyHomePage(
+                          title: "MyMilton",
+                        );
+//                      }
+//                      else{
+//
+//                        return LoginPage(errorMessage: "Please sign in with your milton.edu email",);
+//                      }
                     });
                   },
                   splashColor: Colors.cyan,
@@ -91,17 +97,26 @@ class _LoginState extends State<LoginPage> {
                           height: 20,
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(left:30.0),
+                          padding: const EdgeInsets.only(left: 30.0),
                           child: Text(
                             "Sign in with Google",
-                            style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.grey),
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey),
                           ),
                         ),
                       ],
                     ),
                   )),
             ),
-          )
+          ),
+          widget.errorMessage != null
+              ? Text(
+                  widget.errorMessage,
+                  style: TextStyle(color: Colors.red),
+                )
+              : Text("")
         ],
       ),
     ));

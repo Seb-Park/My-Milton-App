@@ -87,7 +87,7 @@ classDetailDialog(BuildContext context, String className, String teacher,
       builder: (context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(15.0))),
+              borderRadius: BorderRadius.all(Radius.circular(5.0))),
           content: Stack(
             alignment: Alignment.center,
             children: <Widget>[

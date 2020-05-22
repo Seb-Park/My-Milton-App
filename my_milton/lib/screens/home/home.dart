@@ -9,6 +9,7 @@ import 'package:my_milton/services/google_oauth.dart';
 import 'package:my_milton/services/google_user.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:my_milton/screens/navpage/navpage.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title, this.user}) : super(key: key);
@@ -22,7 +23,7 @@ class MyHomePage extends StatefulWidget {
 Future<LoginPage> _signOut() async {
   await FirebaseAuth.instance.signOut();
   signOutGoogle();
-  return new LoginPage();
+//  return new LoginPage();
 }
 
 String todayOrYesterday(int today, int dayInQuestion) {
@@ -353,43 +354,102 @@ class _MyHomePageState extends State<MyHomePage> {
       "content": content,
       "author": Provider.of<AppUser>(context).username,
       "time": Timestamp.fromDate(DateTime.now()),
-      "photo_url":Provider.of<AppUser>(context).photoUrl
+      "photo_url": Provider.of<AppUser>(context).photoUrl
     });
   }
 
   Widget showCards() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: (GridView.count(
-        crossAxisCount: 2,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: MaterialButton(
-              child: Icon(Icons.announcement),
-              onPressed: () {
-                setState(() {
-                  _page = 1;
-                  setBottomNavPage(_page);
-                });
-              },
-              color: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(8.0))),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: MaterialButton(
-              child: Image(image: AssetImage("assets/images/add.png")),
-              onPressed: () {},
-              color: Colors.white,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(8.0))),
-            ),
-          ),
-        ],
-      )),
+      child: StreamBuilder(
+          stream: Firestore.instance
+              .document('users/' + Provider.of<AppUser>(context).id)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) return CircularProgressIndicator();
+            return (GridView.count(
+                crossAxisCount: 2,
+                children: snapshot.data['hub_apps'].reversed
+                    .toList()
+                    .map<Widget>(
+                      (item) => item !=
+                              100 //100 is the code for the add more widgets button which is added by default to every user on registry
+                          ? Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: MaterialButton(
+                                splashColor: Colors.cyan,
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+//                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: <Widget>[
+//                                    Row(
+//                                      mainAxisAlignment:
+//                                          MainAxisAlignment.end,
+//                                      children: <Widget>[
+//                                        FlatButton(
+//                                          shape: CircleBorder(),
+//                                          onPressed: () {},
+//                                          color: Colors.red,
+//                                          textColor: Colors.white,
+//                                          child: Text(
+//                                            "-",
+//                                            textAlign: TextAlign.right,
+//                                          ),
+//                                        ),
+//                                      ],
+//                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(15.0),
+                                      child: Text(''),
+                                    ),
+                                    Center(child: Icon(iconMap[item])),
+                                    Center(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+                                        child: Text(
+                                          pageTitleMap[item],
+                                          style: TextStyle(
+                                              fontFamily: 'Quicksand'),
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              pagesMap[item]));
+                                },
+                                color: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8.0))),
+                              ),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: MaterialButton(
+                                splashColor: Colors.cyan,
+                                child: Image(
+                                    image: AssetImage("assets/images/add.png")),
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => NavHub()));
+                                },
+                                color: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8.0))),
+                              ),
+                            ),
+                    )
+                    .toList()));
+          }),
     );
   }
 
@@ -439,7 +499,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void setBottomNavPage(int page){
+  void setBottomNavPage(int page) {
     final CurvedNavigationBarState navBarState =
         _bottomNavigationKey.currentState;
     navBarState.setPage(page);
@@ -448,9 +508,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     print("building home");
-    if(!Provider.of<AppUser>(context).email.endsWith("milton.edu")){
+    if (!Provider.of<AppUser>(context).email.endsWith("milton.edu")) {
       _signOut();
-      return LoginPage();
+      return LoginPage(
+//        errorMessage: "Please sign in with your milton.edu email",//Error message doesn't work because every time you log out the stream builder detects a change and rebuilds the login page without an error message
+          );
     }
     return Scaffold(
       drawer: ClipRRect(
@@ -489,7 +551,9 @@ class _MyHomePageState extends State<MyHomePage> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(200),
                                 child: Image.network(
-                                  Provider.of<AppUser>(context).photoUrl.replaceAll('s96-c', 's400-c'),
+                                  Provider.of<AppUser>(context)
+                                      .photoUrl
+                                      .replaceAll('s96-c', 's400-c'),
                                 ),
                               ),
                             ),
@@ -550,6 +614,9 @@ class _MyHomePageState extends State<MyHomePage> {
               drawerButton("Logout", Color(0xFFb8ffd1), Colors.green,
                   Icons.exit_to_app, 10, () {
                 _signOut();
+                return new LoginPage(
+                  errorMessage: "You have logged out.",
+                );
               }),
             ],
           ),
@@ -576,7 +643,9 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: Container(
           decoration:
 //              BoxDecoration(border: Border.all(color: Colors.grey, width: 0.1)),
-          BoxDecoration(border: Border(top: BorderSide(color: Colors.blue, width: 15))),
+              BoxDecoration(
+                  border:
+                      Border(top: BorderSide(color: Colors.blue, width: 15))),
           child: CurvedNavigationBar(
 //            buttonBackgroundColor: Colors.blue,
 //            color: Theme.of(context).canvasColor,
