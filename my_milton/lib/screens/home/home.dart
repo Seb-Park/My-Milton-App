@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:my_milton/components/announcement.dart';
 import 'package:my_milton/components/period.dart';
+import 'package:my_milton/components/settings_panel.dart';
 import 'package:my_milton/screens/auth-screen/auth.dart';
 import 'package:my_milton/services/google_oauth.dart';
 import 'package:my_milton/services/google_user.dart';
@@ -61,6 +62,7 @@ class _MyHomePageState extends State<MyHomePage> {
 //                              textStyle: TextStyle(
 //                                  fontSize: 36,
 //                                  fontWeight: FontWeight.normal))
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               fontFamily: 'Quicksand',
                               fontSize: 36,
@@ -406,7 +408,8 @@ class _MyHomePageState extends State<MyHomePage> {
                                     Center(child: Icon(iconMap[item])),
                                     Center(
                                       child: Padding(
-                                        padding: const EdgeInsets.only(top: 15.0, bottom: 15.0),
+                                        padding: const EdgeInsets.only(
+                                            top: 15.0, bottom: 15.0),
                                         child: Text(
                                           pageTitleMap[item],
                                           style: TextStyle(
@@ -639,7 +642,9 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
           child: _page == 0
               ? showSchedule()
-              : _page == 1 ? showAnnouncements() : showCards()),
+              : _page == 1
+                  ? showAnnouncements()
+                  : _page == 2 ? showCards() : showSettings(context)),
       bottomNavigationBar: Container(
           decoration:
 //              BoxDecoration(border: Border.all(color: Colors.grey, width: 0.1)),

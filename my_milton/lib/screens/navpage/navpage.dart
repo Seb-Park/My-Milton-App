@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_milton/screens/home/home.dart';
+import 'package:my_milton/screens/sports/upcoming_sports.dart';
 import 'package:my_milton/services/google_user.dart';
 import 'package:provider/provider.dart';
 
@@ -29,7 +30,7 @@ Map<int, Widget> pagesMap = {
   2: NavHub(),
   3: MyHomePage(title: "MyContacts",),
   4: MyHomePage(title: "MySettings",),
-  5: MyHomePage(title: "MySports",),
+  5: SportsSchedule(),
   6: MyHomePage(title: "MyAttendance",),
 };
 
