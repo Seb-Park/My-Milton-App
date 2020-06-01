@@ -4,6 +4,7 @@ import 'package:my_milton/screens/home/home.dart';
 import 'package:my_milton/screens/sports/upcoming_sports.dart';
 import 'package:my_milton/services/google_user.dart';
 import 'package:provider/provider.dart';
+import 'package:my_milton/screens/voting/voting.dart';
 
 class NavHub extends StatefulWidget {
   NavHub({Key key, this.isAdding}) : super(key: key);
@@ -15,7 +16,7 @@ class NavHub extends StatefulWidget {
 }
 
 Map<int, IconData> iconMap = {
-  0: Icons.home,
+  0: Icons.people_outline,
   1: Icons.chat_bubble_outline,
   2: Icons.add_box,
   3: Icons.people,
@@ -25,7 +26,7 @@ Map<int, IconData> iconMap = {
 };
 
 Map<int, Widget> pagesMap = {
-  0: MyHomePage(title: "MyMilton",),
+  0: VotingPage(),
   1: MyHomePage(title: "MyChats",),
   2: NavHub(),
   3: MyHomePage(title: "MyContacts",),
@@ -35,7 +36,7 @@ Map<int, Widget> pagesMap = {
 };
 
 Map<int, String> pageTitleMap = {
-  0: "MyMilton",
+  0: "Voting",
   1: "Announcements",
   2: "Hub",
   3: "Contacts",
@@ -140,7 +141,7 @@ class _NavHubState extends State<NavHub> {
       ),
       body: Center(
           child: ListView(children: <Widget>[
-        navHubListItem("Voting", 1),
+        navHubListItem("Voting", 0),
         navHubListItem("Sports Events", 1),
         navHubListItem("Attendance", 6),
         navHubListItem("Atheltics", 5),
