@@ -14,10 +14,7 @@ class _LoginState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     print("building the login page");
-//    signOutGoogle();
-    return Scaffold(
-//      drawer:,
-        body: Container(
+    return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
             colors: [Colors.blue, Colors.cyanAccent],
@@ -31,36 +28,6 @@ class _LoginState extends State<LoginPage> {
             padding: const EdgeInsets.only(bottom: 50.0),
             child: Image(image: AssetImage("assets/images/myMiltonSplash.png")),
           ),
-//          Padding(
-//            padding: const EdgeInsets.all(30.0),
-//            child: MaterialButton(
-//                onPressed: () {
-//                  signInWithGoogle().then((id) {
-////                  print(id);
-//                    return MyHomePage(
-//                      title: "MyMilton",
-//                    );
-//                  });
-//                },
-//                splashColor: Colors.cyan,
-//                color: Colors.white,
-////                child: Card(
-//                elevation: 1,
-//                shape: RoundedRectangleBorder(
-//                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
-//                ),
-////              shape: RoundedRectangleBorder(Radius.circular(20.0),),
-//                child: Padding(
-//                  padding: const EdgeInsets.only(
-//                      top: 8.0, right: 40.0, left: 40, bottom: 8.0),
-//                  child: Text(
-//                    "Sign in",
-//                    style: TextStyle(fontSize: 15, fontFamily: "Quicksand"),
-//                  ),
-//                )
-////              ),
-//                ),
-//          ),
           SizedBox(
             width: 300,
             child: Padding(
@@ -69,15 +36,10 @@ class _LoginState extends State<LoginPage> {
                   onPressed: () {
                     signInWithGoogle().then((id) {
 //                      if(id.username.endsWith("milton.edu")) {
-                        print(id.username + " is the newly logged in id!");
-                        return MyHomePage(
-                          title: "MyMilton",
-                        );
-//                      }
-//                      else{
-//
-//                        return LoginPage(errorMessage: "Please sign in with your milton.edu email",);
-//                      }
+                      print(id.username + " is the newly logged in id!");
+                      return MyHomePage(
+                        title: "MyMilton",
+                      );
                     });
                   },
                   splashColor: Colors.cyan,
@@ -113,12 +75,12 @@ class _LoginState extends State<LoginPage> {
           ),
           widget.errorMessage != null
               ? Text(
-                  widget.errorMessage,
-                  style: TextStyle(color: Colors.red),
-                )
+            widget.errorMessage,
+            style: TextStyle(color: Colors.red),
+          )
               : Text("")
         ],
       ),
-    ));
+    );
   }
 }

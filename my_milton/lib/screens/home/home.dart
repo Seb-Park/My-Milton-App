@@ -1,16 +1,16 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:my_milton/components/announcement.dart';
-import 'package:my_milton/components/period.dart';
+import 'package:my_milton/components/drawer_button.dart';
+import 'package:my_milton/screens/navcards/navhub_cards.dart';
 import 'package:my_milton/components/settings_panel.dart';
 import 'package:my_milton/screens/auth-screen/auth.dart';
+import 'package:my_milton/screens/announcements/announce_feed.dart';
+import 'package:my_milton/screens/schedule/schedule_page.dart';
 import 'package:my_milton/services/google_oauth.dart';
 import 'package:my_milton/services/google_user.dart';
+import 'package:my_milton/utilities/primitive_wrapper.dart';
 import 'package:provider/provider.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:my_milton/screens/navpage/navpage.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title, this.user}) : super(key: key);
@@ -27,441 +27,19 @@ Future<LoginPage> _signOut() async {
 //  return new LoginPage();
 }
 
-String todayOrYesterday(int today, int dayInQuestion) {
-  if (dayInQuestion == today) {
-    return "Today";
-  } else {
-    return "Yesterday";
-  }
-}
-
 class _MyHomePageState extends State<MyHomePage> {
-  int _page = 0;
+  var _page = PrimitiveWrapper(0);
   GlobalKey _bottomNavigationKey = GlobalKey();
-
-  Widget showSchedule() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Expanded(
-          child: Center(
-            child: ListView(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                      height: 50,
-                      child: Text(
-                          weekdayFromInt(DateTime.now().weekday) +
-                              ", " +
-                              monthNameFromInt(DateTime.now().month)
-                                  .toString() +
-                              " " +
-                              DateTime.now().day.toString(),
-//                          style: GoogleFonts.quicksand(
-//                              textStyle: TextStyle(
-//                                  fontSize: 36,
-//                                  fontWeight: FontWeight.normal))
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontFamily: 'Quicksand',
-                              fontSize: 36,
-                              fontWeight: FontWeight.normal))),
-                ),
-                period(context, "Precalculus", "Hales", "MA41-C-1", "AMC004",
-                    "8:20", "9:10"),
-                period(context, "Programming 2/3", "Hales", "MACS23", "AMC004",
-                    "9:15", "10:00"),
-                period(context, "Recess", " ", " ", " ", "10:00", "10:15"),
-                period(context, "Biology", "Lillis", "SCHB-2", "PSC202",
-                    "10:15", "11:00"),
-                period(context, " - ", "", "", "", "11:05", "11:50"),
-                period(context, "Advanced Jazz", "Sinicrope", "ADVJIH-2",
-                    "K113", "11:55", "12:40"),
-                period(context, " - ", "", "", "", "12:30", "1:15"),
-                period(context, " - ", "", "", "", "1:20", "2:05"),
-                period(context, "Chinese 4", "Shi", "CH4-1", "WRE310", "2:10",
-                    "2:55"),
-              ],
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  String weekdayFromInt(int dayNo) {
-    switch (dayNo) {
-      case 1:
-        {
-          return "Monday";
-        }
-        break;
-
-      case 2:
-        {
-          return "Tuesday";
-        }
-        break;
-
-      case 3:
-        {
-          return "Wednesday";
-        }
-
-      case 4:
-        {
-          return "Thursday";
-        }
-
-      case 5:
-        {
-          return "Friday";
-        }
-
-      case 6:
-        {
-          return "Saturday";
-        }
-
-      default:
-        {
-          return "Sunday";
-        }
-        break;
-    }
-  }
-
-  String monthNameFromInt(int monthNo) {
-    switch (monthNo) {
-      case 1:
-        {
-          return "January";
-        }
-        break;
-
-      case 2:
-        {
-          return "February";
-        }
-        break;
-
-      case 3:
-        {
-          return "March";
-        }
-        break;
-
-      case 4:
-        {
-          return "April";
-        }
-        break;
-
-      case 5:
-        {
-          return "May";
-        }
-        break;
-
-      case 6:
-        {
-          return "June";
-        }
-        break;
-
-      case 7:
-        {
-          return "July";
-        }
-        break;
-
-      case 8:
-        {
-          return "August";
-        }
-        break;
-
-      case 9:
-        {
-          return "September";
-        }
-        break;
-      case 10:
-        {
-          return "October";
-        }
-        break;
-
-      case 11:
-        {
-          return "November";
-        }
-        break;
-
-      default:
-        {
-          return "December";
-        }
-        break;
-    }
-  }
-
-  Widget showAnnouncements() {
-    var tfhoursAgo = Timestamp.fromDate((new DateTime.now())
-        .subtract(new Duration(minutes: Duration.minutesPerDay)));
-    return (StreamBuilder(
-//              stream: Firestore.instance.collection('announcement_board').snapshots(),
-        stream: Firestore.instance
-            .collection('announcement_posts')
-            .where("time", isGreaterThanOrEqualTo: tfhoursAgo)
-            .orderBy("time", descending: true)
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) return const CircularProgressIndicator();
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Text(
-                      "Announcements",
-                      style: TextStyle(fontFamily: 'Quicksand', fontSize: 25),
-                    ),
-                    MaterialButton(
-                      color: Colors.white,
-                      child: Image(
-                        image: AssetImage("assets/images/add.png"),
-                        height: 20,
-                      ),
-                      onPressed: () {
-                        newPost(context);
-//                        sendPost("Test Post", "Just testing out stuff.");
-                      },
-                      shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.all(Radius.circular(20.0))),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: snapshot.data.documents.length > 0
-                    ? ListView.builder(
-                        itemExtent: 80.0,
-//                itemCount: (snapshot.data.documents.length),
-//                  itemCount:
-//                  (snapshot.data.documents[0]['announcements'].length),
-                        itemCount: (snapshot.data.documents.length),
-                        itemBuilder: (context, index) =>
-//                      announcementSubPost(
-//                      ((snapshot.data.documents[0])['announcements'])[index],
-//                      Colors.red),
-                            announcementPost(snapshot.data.documents[index],
-                                Colors.red, context),
-                      )
-                    : Center(child: Text("No announcements here!\n\n\n")),
-              ),
-            ],
-          );
-        }));
-  }
-
-  newPost(BuildContext context) {
-    TextEditingController titleController = new TextEditingController();
-    TextEditingController contentController = new TextEditingController();
-
-    return showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(5.0))),
-            content: Stack(
-              alignment: Alignment.center,
-              children: <Widget>[
-                Container(
-                  height: MediaQuery.of(context).size.height / 2,
-//              height: context.size.height/2,
-//                height: double.infinity,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Text("New Post",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold, fontSize: 20)),
-                      TextFormField(
-                        controller: titleController,
-                        decoration: InputDecoration(
-                          hintText: "Title",
-                        ),
-                      ),
-                      TextFormField(
-                          controller: contentController,
-                          keyboardType: TextInputType.multiline,
-                          maxLines: 5,
-                          decoration: InputDecoration(
-                            hintText: "Message",
-                          )),
-                      MaterialButton(
-                        elevation: 0,
-                        color: Colors.blue,
-                        child:
-                            Text("Post", style: TextStyle(color: Colors.white)),
-                        onPressed: () {
-                          if (titleController.text != null &&
-                              titleController.text.length > 0) {
-                            sendPost(
-                                titleController.text, contentController.text);
-                            Navigator.pop(context);
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          );
-        });
-  }
-
-  Future sendPost(String title, String content) async {
-    CollectionReference abCollection =
-        Firestore.instance.collection('announcement_posts');
-//        Firestore.instance.collection('announcement_board');
-//    List<DocumentReference> newBoard =(abCollection.document("todays_announcements")
-//    as Map)['announcements'] as List<DocumentReference>;
-//    newBoard.add({
-//      "subject": title,
-//      "details" : content,
-//      "poster" : Provider.of<AppUser>(context).username,
-//      "date_posted" : (DateTime.now()) as Timestamp,
-//    } as DocumentReference);
-//    return await abCollection.document("todays_announcements").setData({
-//      "announcements": [
-//        {
-//          "subject": title,
-//          "details": content,
-//          "poster": Provider.of<AppUser>(context).username,
-//          "date_posted": Timestamp.fromDate(DateTime.now()),
-//        }
-//      ]
-//    }, merge: true);
-    abCollection.add({
-      "title": title,
-      "content": content,
-      "author": Provider.of<AppUser>(context).username,
-      "time": Timestamp.fromDate(DateTime.now()),
-      "photo_url": Provider.of<AppUser>(context).photoUrl
-    });
-  }
-
-  Widget showCards() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: StreamBuilder(
-          stream: Firestore.instance
-              .document('users/' + Provider.of<AppUser>(context).id)
-              .snapshots(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) return CircularProgressIndicator();
-            return (GridView.count(
-                crossAxisCount: 2,
-                children: snapshot.data['hub_apps'].reversed
-                    .toList()
-                    .map<Widget>(
-                      (item) => item !=
-                              100 //100 is the code for the add more widgets button which is added by default to every user on registry
-                          ? Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: MaterialButton(
-                                splashColor: Colors.cyan,
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-//                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: <Widget>[
-//                                    Row(
-//                                      mainAxisAlignment:
-//                                          MainAxisAlignment.end,
-//                                      children: <Widget>[
-//                                        FlatButton(
-//                                          shape: CircleBorder(),
-//                                          onPressed: () {},
-//                                          color: Colors.red,
-//                                          textColor: Colors.white,
-//                                          child: Text(
-//                                            "-",
-//                                            textAlign: TextAlign.right,
-//                                          ),
-//                                        ),
-//                                      ],
-//                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(15.0),
-                                      child: Text(''),
-                                    ),
-                                    Center(child: Icon(iconMap[item])),
-                                    Center(
-                                      child: Padding(
-                                        padding: const EdgeInsets.only(
-                                            top: 15.0, bottom: 15.0),
-                                        child: Text(
-                                          pageTitleMap[item],
-                                          style: TextStyle(
-                                              fontFamily: 'Quicksand'),
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              pagesMap[item]));
-                                },
-                                color: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8.0))),
-                              ),
-                            )
-                          : Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: MaterialButton(
-                                splashColor: Colors.cyan,
-                                child: Image(
-                                    image: AssetImage("assets/images/add.png")),
-                                onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => NavHub()));
-                                },
-                                color: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(8.0))),
-                              ),
-                            ),
-                    )
-                    .toList()));
-          }),
-    );
-  }
+  Schedule _schedulePage = new Schedule();
+  AnnouncementFeed _announcementFeed = new AnnouncementFeed();
+  NavhubCards _navhubCards = new NavhubCards();
 
   Widget drawerButton(String btnText, Color selectedColor, Color selectedFont,
       IconData btnIcn, int btnPage, Function onTapFunction) {
     return SizedBox(
       width: double.infinity,
       child: ClipRRect(
-        borderRadius: (_page != btnPage)
+        borderRadius: (_page.value != btnPage)
             ? BorderRadius.only(
                 topRight: Radius.circular(50), bottomRight: Radius.circular(50))
             : BorderRadius.zero,
@@ -470,8 +48,8 @@ class _MyHomePageState extends State<MyHomePage> {
             onTapFunction();
             Navigator.pop(context);
           },
-          color: (_page == btnPage) ? selectedColor : Colors.white,
-//          highlightColor: (_page != btnPage) ? Theme.of(context).canvasColor : Colors.white,
+          color: (_page.value == btnPage) ? selectedColor : Colors.white,
+//          highlightColor: (_page.value != btnPage) ? Theme.of(context).canvasColor : Colors.white,
           padding: EdgeInsets.only(top: 10, bottom: 10, left: 10),
           child: Align(
               alignment: Alignment.centerLeft,
@@ -482,7 +60,9 @@ class _MyHomePageState extends State<MyHomePage> {
                     padding: const EdgeInsets.only(left: 10.0, right: 10.0),
                     child: Icon(
                       btnIcn,
-                      color: (_page == btnPage) ? selectedFont : Colors.black,
+                      color: (_page.value == btnPage)
+                          ? selectedFont
+                          : Colors.black,
                     ),
                   ),
                   Padding(
@@ -491,7 +71,9 @@ class _MyHomePageState extends State<MyHomePage> {
                       btnText,
                       textAlign: TextAlign.left,
                       style: TextStyle(
-                        color: (_page == btnPage) ? selectedFont : Colors.black,
+                        color: (_page.value == btnPage)
+                            ? selectedFont
+                            : Colors.black,
                       ),
                     ),
                   ),
@@ -562,11 +144,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                             Text(
                               Provider.of<AppUser>(context).username,
-//                      style: GoogleFonts.quicksand(
-//                          textStyle: TextStyle(
-//                              fontWeight: FontWeight.bold,
-//                              fontSize: 20,
-//                              color: Colors.white)),
                               style: TextStyle(
                                   fontFamily: 'Quicksand',
 //                                      color: Colors.white,
@@ -575,52 +152,83 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                             Text(
                               Provider.of<AppUser>(context).email,
-                              style: TextStyle(
-//                                      fontFamily: 'Quicksand',
-//                                      color: Colors.white,
-//                                      fontSize: 15,
-                                  fontWeight: FontWeight.w300),
+                              style: TextStyle(fontWeight: FontWeight.w300),
                             ),
                           ],
                         ),
                       )),
                 ),
               ),
-              drawerButton("Profile", Color(0xFFfff3d1), Colors.orange,
-                  Icons.account_circle, 4, () {
-                setState(() {
-                  _page = 4;
-                  setBottomNavPage(_page);
-                });
-              }),
-              drawerButton(
-                  "Home", Color(0xFFb0e2ff), Colors.blue, Icons.home, 0, () {
-                setState(() {
-                  _page = 0;
-                  setBottomNavPage(_page);
-                });
-              }),
-              drawerButton("Announcements", Color(0xFFffd1d1), Colors.red,
-                  Icons.chat_bubble_outline, 1, () {
-                setState(() {
-                  _page = 1;
-                  setBottomNavPage(_page);
-                });
-              }),
-              drawerButton(
-                  "Hub", Color(0xFFb8ffd1), Colors.green, Icons.add_box, 2, () {
-                setState(() {
-                  _page = 2;
-                  setBottomNavPage(_page);
-                });
-              }),
-              drawerButton("Logout", Color(0xFFb8ffd1), Colors.green,
-                  Icons.exit_to_app, 10, () {
-                _signOut();
-                return new LoginPage(
-                  errorMessage: "You have logged out.",
-                );
-              }),
+              DrawerButton(
+                btnText: "Profile",
+                selectedColor: Color(0xFFfff3d1),
+                selectedFontColor: Colors.orange,
+                btnIcn: Icons.account_circle,
+                btnPage: 4,
+                onTap: () {
+                  setState(() {
+                    _page.value = 4;
+                    setBottomNavPage(_page.value);
+                  });
+                },
+                pageValue: _page,
+              ),
+              DrawerButton(
+                btnText: "Home",
+                selectedColor: Color(0xFFb0e2ff),
+                selectedFontColor: Colors.blue,
+                btnIcn: Icons.home,
+                btnPage: 0,
+                onTap: () {
+                  setState(() {
+                    _page.value = 0;
+                    setBottomNavPage(_page.value);
+                  });
+                },
+                pageValue: _page,
+              ),
+              DrawerButton(
+                btnText: "Announcements",
+                selectedColor: Color(0xFFffd1d1),
+                selectedFontColor: Colors.red,
+                btnIcn: Icons.chat_bubble_outline,
+                btnPage: 1,
+                onTap: () {
+                  setState(() {
+                    _page.value = 1;
+                    setBottomNavPage(_page.value);
+                  });
+                },
+                pageValue: _page,
+              ),
+              DrawerButton(
+                btnText: "Hub",
+                selectedColor: Color(0xFFb8ffd1),
+                selectedFontColor: Colors.green,
+                btnIcn: Icons.add_box,
+                btnPage: 2,
+                onTap: () {
+                  setState(() {
+                    _page.value = 2;
+                    setBottomNavPage(_page.value);
+                  });
+                },
+                pageValue: _page,
+              ),
+              DrawerButton(
+                btnText: "Logout",
+                selectedColor: Color(0xFFb8ffd1),
+                selectedFontColor: Colors.green,
+                btnIcn: Icons.exit_to_app,
+                btnPage: 10,
+                onTap: () {
+                  _signOut();
+                  return new LoginPage(
+                    errorMessage: "You have logged out.",
+                  );
+                },
+                pageValue: _page,
+              ),
             ],
           ),
         ) // Populate the Drawer in the next step.
@@ -640,11 +248,11 @@ class _MyHomePageState extends State<MyHomePage> {
             style: TextStyle(fontFamily: 'Quicksand')),
       ),
       body: Center(
-          child: _page == 0
-              ? showSchedule()
-              : _page == 1
-                  ? showAnnouncements()
-                  : _page == 2 ? showCards() : showSettings(context)),
+          child: _page.value == 0
+              ? _schedulePage
+              : _page.value == 1
+                  ? _announcementFeed
+                  : _page.value == 2 ? _navhubCards : showSettings(context)),
       bottomNavigationBar: Container(
           decoration:
 //              BoxDecoration(border: Border.all(color: Colors.grey, width: 0.1)),
@@ -652,12 +260,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   border:
                       Border(top: BorderSide(color: Colors.blue, width: 15))),
           child: CurvedNavigationBar(
-//            buttonBackgroundColor: Colors.blue,
-//            color: Theme.of(context).canvasColor,
             key: _bottomNavigationKey,
             color: Colors.white,
-//            animationDuration: Duration(milliseconds: 400),
-//            animationCurve: Curves.decelerate,
             backgroundColor: Colors.blue,
             height: 50,
             items: <Widget>[
@@ -677,7 +281,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ],
             onTap: (index) {
               setState(() {
-                _page = index;
+                _page.value = index;
               });
             },
           )),

@@ -1,6 +1,142 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import '../screens/home/home.dart';
+import 'package:my_milton/utilities/date_utils.dart';
+import '../../home/home.dart';
+
+class AnnouncementPost extends StatelessWidget{
+
+  AnnouncementPost({this.document});
+
+  final DocumentSnapshot document;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      elevation: 0.0, //Change this maybe?
+      child: MaterialButton(
+        splashColor: Colors.cyan,
+        elevation: 0.0,
+        child: Padding(
+          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 0.0),
+          child: Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    document['photo_url'] == null
+                        ? Container(
+                        height: 60,
+                        width: 60,
+                        child: Card(
+                          color: Colors.orange,
+                          elevation: 0.0,
+                          shape: CircleBorder(),
+                          child: Center(
+                              child: Text(document['author'].substring(0, 1),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                      fontFamily: 'Quicksand'))),
+                        ))
+                        : Row(
+                      children: <Widget>[
+                        SizedBox(
+                          width: 4.0,
+                        ),
+                        Container(
+                          height: 50,
+                          width: 50,
+                          decoration: new BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: new DecorationImage(
+                                  fit: BoxFit.cover,
+                                  image: new NetworkImage(
+                                      document['photo_url']
+                                          .toString()
+                                          .replaceAll('s96-c', 's400-c')))),
+                        ),
+                        SizedBox(
+                          width: 4.0,
+                        )
+                      ],
+                    ),
+                    Container(
+                      padding: const EdgeInsets.only(left: 8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Container(
+                            constraints: BoxConstraints(
+                                maxWidth:
+                                MediaQuery.of(context).size.width - 120),
+                            child: Text(
+                              document['title'],
+                              overflow: TextOverflow.fade,
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.left,
+                              softWrap: false,
+                            ),
+                          ),
+                          Text(
+                            document['author'] +
+                                " - " +
+                                DateUtilities.todayOrYesterday(
+                                    DateTime.now().weekday,
+                                    (document['time'] as Timestamp)
+                                        .toDate()
+                                        .weekday) +
+                                " " +
+                                ((document['time'] as Timestamp).toDate())
+                                    .hour
+                                    .toString() +
+                                ":" +
+                                (((document['time'] as Timestamp).toDate())
+                                    .minute +
+                                    100)
+                                    .toString()
+                                    .substring(1, 3),
+                            //this makes the minutes always have 2 digits and then removes all decimals
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: Colors.grey,
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        onPressed: () {
+          openPost(context);
+        },
+      ),
+    );
+  }
+
+  openPost(BuildContext context){
+    return announcementDetails(
+        document['title'],
+        document['content'],
+        DateUtilities.todayOrYesterday(DateTime.now().weekday,
+            (document['time'] as Timestamp).toDate().weekday) +
+            " " +
+            ((document['time'] as Timestamp).toDate()).hour.toString() +
+            ":" +
+            (((document['time'] as Timestamp).toDate()).minute + 100)
+                .toString()
+                .substring(1, 3),
+        document['author'],
+        context);
+  }
+}
 
 Widget announcementPost(
     DocumentSnapshot document, Color color, BuildContext context) {
@@ -100,7 +236,7 @@ Widget announcementPost(
                           document['author'] +
 //                              " - Posted " +
                               " - " +
-                              todayOrYesterday(
+                              DateUtilities.todayOrYesterday(
                                   DateTime.now().weekday,
                                   (document['time'] as Timestamp)
                                       .toDate()
@@ -135,7 +271,7 @@ Widget announcementPost(
         announcementDetails(
             document['title'],
             document['content'],
-            todayOrYesterday(DateTime.now().weekday,
+            DateUtilities.todayOrYesterday(DateTime.now().weekday,
                     (document['time'] as Timestamp).toDate().weekday) +
                 " " +
                 ((document['time'] as Timestamp).toDate()).hour.toString() +
@@ -256,7 +392,7 @@ Widget announcementSubPost(Map post, Color color) {
                           Text(
                             post['poster'] +
                                 " - Posted " +
-                                todayOrYesterday(
+                                DateUtilities.todayOrYesterday(
                                     DateTime.now().weekday,
                                     (post['date_posted'] as Timestamp)
                                         .toDate()

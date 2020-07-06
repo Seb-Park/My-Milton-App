@@ -19,7 +19,6 @@ class Wrapper extends StatelessWidget {
       builder: (context, snapshot) {
         if (FirebaseAuth.instance.currentUser() != null && user != null) {
           return MyHomePage(title: "MyMilton");
-//          return LoginPage();
         } else {
           return LoginPage();
         }

@@ -17,92 +17,159 @@ class _VotingPageState extends State<VotingPage> {
   int oneAgo;
   int twoAgo;
 
-  List<String> candidateNames = ['Sam', 'Charlotte', 'Garvin', 'Austin'];
-  List<bool> boolList = [false, false, false, false];
+  List<String> candidateNames = [
+    'Sam',
+    'Charlotte',
+    'Garvin',
+    'Austin',
+    'Gracie',
+    'Sam',
+    'Charlotte',
+    'Garvin',
+    'Austin',
+    'Gracie'
+  ];
+  List<bool> boolList = [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text("Vote Now!"),
+          title: Text(
+            "Voting",
+            style: TextStyle(fontFamily: 'Quicksand'),
+          ),
           centerTitle: true,
         ),
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              // [Monday] checkbox
-              Row(
+          child: StreamBuilder(
+              stream: Firestore.instance
+                  .collection("voting/2020/head_monitors")
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) return CircularProgressIndicator();
+                return Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text(" Select your canidates "),
-                  ]),
-              Expanded(
-                  child: ListView.builder(
-                itemExtent: 100.0,
-                itemCount: candidateNames.length,
-                itemBuilder: (context, index) =>
-                    candidate(candidateNames[index], index),
-              )),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  RaisedButton(
-                    child: Text("VOTE"),
-                    onPressed: _changeText,
-                    color: Colors.blue,
-                    textColor: Colors.white,
-                    padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
-                    splashColor: Colors.grey,
-                  )
-                ],
-              ),
-            ],
+                    SizedBox(
+                      height: 100,
+                    ),
+                    Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Text(" Select your canidates "),
+                        ]),
+                    Expanded(
+                        child: Center(
+                          child: ListView.builder(
+                            itemExtent: 100.0,
+                            itemCount: snapshot.data.documents.length,
+                            itemBuilder: (context, index) =>
+                                candidate(
+                                    snapshot.data.documents[index], index),
+                          ),
+                        )),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        RaisedButton(
+                          child: Text("VOTE"),
+                          onPressed: () {vote(snapshot);},
+                          color: Colors.blue,
+                          textColor: Colors.white,
+                          padding: EdgeInsets.fromLTRB(10, 10, 10, 10),
+                          splashColor: Colors.grey,
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: 100,
+                    ),
+                  ],
+                );
+              }
           ),
         ));
   }
 
-  Widget candidate(String name, int index) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        Text(name),
-        Checkbox(
-          value: boolList[index],
-          onChanged: (bool value) {
-            setState(() {
-              boolList[index] = value;
-              if (value) {
-                if (twoAgo != null) {
-                  boolList[twoAgo] = false;
-                }
-                if (oneAgo != null) {
-                  twoAgo = oneAgo;
-                }
-                oneAgo = index;
-              }
-            });
-          },
+  Widget candidate(DocumentSnapshot doc, int index) {
+    return Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+//          onPressed: () {
+//            bool value = !boolList[index];
+//            setState(() {
+//              boolList[index] = value;
+//              if (value) {
+//                if (twoAgo != null) {
+//                  boolList[twoAgo] = false;
+//                }
+//                if (oneAgo != null) {
+//                  twoAgo = oneAgo;
+//                }
+//                oneAgo = index;
+//              }
+//            });
+//          },
+        color: Colors.white,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.only(left: 20.0),
+              child: Text(
+                doc['name'],
+                style: TextStyle(fontFamily: 'Quicksand', fontSize: 20),
+              ),
+            ),
+            Checkbox(
+              value: boolList[index],
+              onChanged: (bool value) {
+                setState(() {
+                  boolList[index] = value;
+                  if (value) {
+                    if (twoAgo != null) {
+                      boolList[twoAgo] = false;
+                    }
+                    if (oneAgo != null) {
+                      twoAgo = oneAgo;
+                    }
+                    oneAgo = index;
+                  }
+                });
+              },
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 
-  void _changeText() {
-    setState(() {
-      Text("Thanks for Voting!");
-      if (oneVal == true) {
-        one++;
+  void vote(AsyncSnapshot<dynamic> snapshot) {
+    for (int i = 0; i < boolList.length; i++) {
+      if (boolList[i]) {
+        _voteFor(snapshot.data.documents[i]);
       }
-      if (twoVal == true) {
-        two++;
-      }
-      if (threeVal == true) {
-        three++;
-      }
-      print(one);
-      print(two);
-      print(three);
+    }
+  }
+
+  void _voteFor(DocumentSnapshot document) {
+    Firestore.instance.runTransaction((transaction) async {
+      DocumentSnapshot freshSnap = await transaction.get(document.reference);
+      await transaction
+          .update(freshSnap.reference, {'votes': freshSnap['votes'] + 1});
     });
   }
 }
