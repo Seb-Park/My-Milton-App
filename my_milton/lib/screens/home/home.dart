@@ -34,56 +34,6 @@ class _MyHomePageState extends State<MyHomePage> {
   AnnouncementFeed _announcementFeed = new AnnouncementFeed();
   NavhubCards _navhubCards = new NavhubCards();
 
-  Widget drawerButton(String btnText, Color selectedColor, Color selectedFont,
-      IconData btnIcn, int btnPage, Function onTapFunction) {
-    return SizedBox(
-      width: double.infinity,
-      child: ClipRRect(
-        borderRadius: (_page.value != btnPage)
-            ? BorderRadius.only(
-                topRight: Radius.circular(50), bottomRight: Radius.circular(50))
-            : BorderRadius.zero,
-        child: FlatButton(
-          onPressed: () {
-            onTapFunction();
-            Navigator.pop(context);
-          },
-          color: (_page.value == btnPage) ? selectedColor : Colors.white,
-//          highlightColor: (_page.value != btnPage) ? Theme.of(context).canvasColor : Colors.white,
-          padding: EdgeInsets.only(top: 10, bottom: 10, left: 10),
-          child: Align(
-              alignment: Alignment.centerLeft,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
-                    child: Icon(
-                      btnIcn,
-                      color: (_page.value == btnPage)
-                          ? selectedFont
-                          : Colors.black,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      btnText,
-                      textAlign: TextAlign.left,
-                      style: TextStyle(
-                        color: (_page.value == btnPage)
-                            ? selectedFont
-                            : Colors.black,
-                      ),
-                    ),
-                  ),
-                ],
-              )),
-        ),
-      ),
-    );
-  }
-
   void setBottomNavPage(int page) {
     final CurvedNavigationBarState navBarState =
         _bottomNavigationKey.currentState;
@@ -93,11 +43,14 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     print("building home");
-    if (!Provider.of<AppUser>(context).email.endsWith("milton.edu")) {
+    if (!Provider
+        .of<AppUser>(context)
+        .email
+        .endsWith("milton.edu")) {
       _signOut();
       return LoginPage(
 //        errorMessage: "Please sign in with your milton.edu email",//Error message doesn't work because every time you log out the stream builder detects a change and rebuilds the login page without an error message
-          );
+      );
     }
     return Scaffold(
       drawer: ClipRRect(
@@ -107,158 +60,178 @@ class _MyHomePageState extends State<MyHomePage> {
 //            bottomRight: Radius.circular(20.0)),
         child: Drawer(
             child: Container(
-          color: Colors.white,
-          child: Column(
-            children: <Widget>[
-              Container(
+              color: Colors.white,
+              child: Column(
+                children: <Widget>[
+                  Container(
 //              color: Colors.blue,
-                decoration: BoxDecoration(
-                  border: Border(
-                      bottom: BorderSide(width: 1.0, color: Color(0xFFededed))),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.only(left: 0.0),
-                  child: SizedBox(
-                      height: 150,
-                      width: double.infinity,
-                      child: Align(
+                    decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(
+                              width: 1.0, color: Color(0xFFededed))),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 0.0),
+                      child: SizedBox(
+                          height: 150,
+                          width: double.infinity,
+                          child: Align(
 //                            alignment: Alignment.centerLeft,
-                        alignment: Alignment.center,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            alignment: Alignment.center,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 //                              crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            SizedBox(
-                              height: 15,
-                            ),
-                            Container(
-                              height: 70,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(200),
-                                child: Image.network(
-                                  Provider.of<AppUser>(context)
-                                      .photoUrl
-                                      .replaceAll('s96-c', 's400-c'),
+                              children: <Widget>[
+                                SizedBox(
+                                  height: 15,
                                 ),
-                              ),
-                            ),
-                            Text(
-                              Provider.of<AppUser>(context).username,
-                              style: TextStyle(
-                                  fontFamily: 'Quicksand',
+                                Container(
+                                  height: 70,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(200),
+                                    child: Image.network(
+                                      Provider
+                                          .of<AppUser>(context)
+                                          .photoUrl
+                                          .replaceAll('s96-c', 's400-c'),
+                                    ),
+                                  ),
+                                ),
+                                Text(
+                                  Provider
+                                      .of<AppUser>(context)
+                                      .username,
+                                  style: TextStyle(
+                                      fontFamily: 'Quicksand',
 //                                      color: Colors.white,
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.w700),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700),
+                                ),
+                                Text(
+                                  Provider
+                                      .of<AppUser>(context)
+                                      .email,
+                                  style: TextStyle(fontWeight: FontWeight.w300),
+                                ),
+                              ],
                             ),
-                            Text(
-                              Provider.of<AppUser>(context).email,
-                              style: TextStyle(fontWeight: FontWeight.w300),
-                            ),
-                          ],
-                        ),
-                      )),
-                ),
+                          )),
+                    ),
+                  ),
+                  DrawerButton(
+                    btnText: "Profile",
+                    selectedColor: Color(0xFFfff3d1),
+                    selectedFontColor: Colors.orange,
+                    btnIcn: Icons.account_circle,
+                    btnPage: 4,
+                    onTap: () {
+                      setState(() {
+                        _page.value = 4;
+                        setBottomNavPage(_page.value);
+                      });
+                    },
+                    pageValue: _page,
+                  ),
+                  DrawerButton(
+                    btnText: "Home",
+                    selectedColor: Color(0xFFb0e2ff),
+                    selectedFontColor: Colors.blue,
+                    btnIcn: Icons.home,
+                    btnPage: 0,
+                    onTap: () {
+                      setState(() {
+                        _page.value = 0;
+                        setBottomNavPage(_page.value);
+                      });
+                    },
+                    pageValue: _page,
+                  ),
+                  DrawerButton(
+                    btnText: "Announcements",
+                    selectedColor: Color(0xFFffd1d1),
+                    selectedFontColor: Colors.red,
+                    btnIcn: Icons.chat_bubble_outline,
+                    btnPage: 1,
+                    onTap: () {
+                      setState(() {
+                        _page.value = 1;
+                        setBottomNavPage(_page.value);
+                      });
+                    },
+                    pageValue: _page,
+                  ),
+                  DrawerButton(
+                    btnText: "Hub",
+                    selectedColor: Color(0xFFb8ffd1),
+                    selectedFontColor: Colors.green,
+                    btnIcn: Icons.add_box,
+                    btnPage: 2,
+                    onTap: () {
+                      setState(() {
+                        _page.value = 2;
+                        setBottomNavPage(_page.value);
+                      });
+                    },
+                    pageValue: _page,
+                  ),
+                  DrawerButton(
+                    btnText: "Logout",
+                    selectedColor: Color(0xFFb8ffd1),
+                    selectedFontColor: Colors.green,
+                    btnIcn: Icons.exit_to_app,
+                    btnPage: 10,
+                    onTap: () {
+                      _signOut();
+                      return new LoginPage(
+                        errorMessage: "You have logged out.",
+                      );
+                    },
+                    pageValue: _page,
+                  ),
+                ],
               ),
-              DrawerButton(
-                btnText: "Profile",
-                selectedColor: Color(0xFFfff3d1),
-                selectedFontColor: Colors.orange,
-                btnIcn: Icons.account_circle,
-                btnPage: 4,
-                onTap: () {
-                  setState(() {
-                    _page.value = 4;
-                    setBottomNavPage(_page.value);
-                  });
-                },
-                pageValue: _page,
-              ),
-              DrawerButton(
-                btnText: "Home",
-                selectedColor: Color(0xFFb0e2ff),
-                selectedFontColor: Colors.blue,
-                btnIcn: Icons.home,
-                btnPage: 0,
-                onTap: () {
-                  setState(() {
-                    _page.value = 0;
-                    setBottomNavPage(_page.value);
-                  });
-                },
-                pageValue: _page,
-              ),
-              DrawerButton(
-                btnText: "Announcements",
-                selectedColor: Color(0xFFffd1d1),
-                selectedFontColor: Colors.red,
-                btnIcn: Icons.chat_bubble_outline,
-                btnPage: 1,
-                onTap: () {
-                  setState(() {
-                    _page.value = 1;
-                    setBottomNavPage(_page.value);
-                  });
-                },
-                pageValue: _page,
-              ),
-              DrawerButton(
-                btnText: "Hub",
-                selectedColor: Color(0xFFb8ffd1),
-                selectedFontColor: Colors.green,
-                btnIcn: Icons.add_box,
-                btnPage: 2,
-                onTap: () {
-                  setState(() {
-                    _page.value = 2;
-                    setBottomNavPage(_page.value);
-                  });
-                },
-                pageValue: _page,
-              ),
-              DrawerButton(
-                btnText: "Logout",
-                selectedColor: Color(0xFFb8ffd1),
-                selectedFontColor: Colors.green,
-                btnIcn: Icons.exit_to_app,
-                btnPage: 10,
-                onTap: () {
-                  _signOut();
-                  return new LoginPage(
-                    errorMessage: "You have logged out.",
-                  );
-                },
-                pageValue: _page,
-              ),
-            ],
-          ),
-        ) // Populate the Drawer in the next step.
-            ),
-      ),
-      appBar: AppBar(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-//            bottom: Radius.circular(15),
-              bottom: Radius.circular(0)),
+            ) // Populate the Drawer in the next step.
         ),
-        backgroundColor: Colors.blue,
-        elevation: 1.0,
-        centerTitle: true,
+      ),
+//      appBar: AppBar(
+//        shape: RoundedRectangleBorder(
+//          borderRadius: BorderRadius.vertical(
+////            bottom: Radius.circular(15),
+//              bottom: Radius.circular(0)),
+//        ),
+//        backgroundColor: Colors.blue,
+//        elevation: 1.0,
+//        centerTitle: true,
+//        title: Text(widget.title,
+//            textAlign: TextAlign.center,
+//            style: TextStyle(fontFamily: 'Quicksand')),
+//      ),
+      appBar: AppBar(
         title: Text(widget.title,
-            textAlign: TextAlign.center,
-            style: TextStyle(fontFamily: 'Quicksand')),
+          textAlign: TextAlign.center,
+          style: TextStyle(fontFamily: 'Quicksand'),),
+        centerTitle: true,
+        elevation: 0.0,
+        flexibleSpace: Container(
+          decoration: BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  colors: <Color>[Color(0xFF2F80ED), Color(0xFF56CCF2)])),
+        ),
       ),
       body: Center(
           child: _page.value == 0
               ? _schedulePage
               : _page.value == 1
-                  ? _announcementFeed
-                  : _page.value == 2 ? _navhubCards : showSettings(context)),
+              ? _announcementFeed
+              : _page.value == 2 ? _navhubCards : showSettings(context)),
       bottomNavigationBar: Container(
           decoration:
 //              BoxDecoration(border: Border.all(color: Colors.grey, width: 0.1)),
-              BoxDecoration(
-                  border:
-                      Border(top: BorderSide(color: Colors.blue, width: 15))),
+          BoxDecoration(
+              border:
+              Border(top: BorderSide(color: Colors.blue, width: 15))),
           child: CurvedNavigationBar(
             key: _bottomNavigationKey,
             color: Colors.white,

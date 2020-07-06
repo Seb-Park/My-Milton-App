@@ -17,7 +17,7 @@ class _LoginState extends State<LoginPage> {
     return Container(
       decoration: BoxDecoration(
         gradient: LinearGradient(
-            colors: [Colors.blue, Colors.cyanAccent],
+            colors: [Color(0xFF2F80ED), Color(0xFF6dd5ed)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter),
       ),
@@ -75,9 +75,9 @@ class _LoginState extends State<LoginPage> {
           ),
           widget.errorMessage != null
               ? Text(
-            widget.errorMessage,
-            style: TextStyle(color: Colors.red),
-          )
+                  widget.errorMessage,
+                  style: TextStyle(color: Colors.red),
+                )
               : Text("")
         ],
       ),
